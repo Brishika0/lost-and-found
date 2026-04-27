@@ -1,0 +1,3281 @@
+{
+  "info": {
+    "_postman_id": "e334610c-1740-4082-92b7-7d660daffcdc",
+    "name": "Lost and Found",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50134001",
+    "_collection_link": "https://go.postman.co/collection/50134001-e334610c-1740-4082-92b7-7d660daffcdc?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "superadmin login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"super@admin.com\",\r\n    \"password\": \"00000000\",\r\n    \"totp\":\"185720\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}auth/superadmin/login",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "superadmin",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"email\": \"ramannnnnn@gmail.com\",\r\n    \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}auth/register",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Email Verify",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"email\": \"raman@heraldcollege.edu.np\",\r\n    \"password\": \"password123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}auth/verify-email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWI3YmFkMTBiZjU3YzFkYjRjNzkxMWYiLCJ0eXBlIjoiZW1haWwtdmVyaWZpY2F0aW9uIiwiaWF0IjoxNzczNjQ4NTkzLCJleHAiOjE3NzM3MzQ5OTN9.1njcpi7RTsXxnXQY-jSAFM_LmUM2tb_J05XCKpZJ51s",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "verify-email",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWI3YmFkMTBiZjU3YzFkYjRjNzkxMWYiLCJ0eXBlIjoiZW1haWwtdmVyaWZpY2F0aW9uIiwiaWF0IjoxNzczNjQ4NTkzLCJleHAiOjE3NzM3MzQ5OTN9.1njcpi7RTsXxnXQY-jSAFM_LmUM2tb_J05XCKpZJ51s"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\",\r\n    \"password\": \"Password@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}auth/login",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}auth/forgot-password",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "forgot-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\",\r\n    \"password\": \"password123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}auth/logout",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWI3YmFkMTBiZjU3YzFkYjRjNzkxMWYiLCJ0eXBlIjoicGFzc3dvcmQtcmVzZXQiLCJpYXQiOjE3NzM2NzgzNDgsImV4cCI6MTc3MzY4MTk0OH0.LOYBZ0bOmydHkcbx1OIyUidqJaOyrUV93HojEjAR2aU\",\r\n    \"newPassword\": \"oldpassword123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}auth/reset-password",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getMe",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\",\r\n    \"password\": \"password123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}auth/me",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Password Change",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"currentPassword\": \"password123\",\r\n    \"newPassword\": \"newpassword123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}auth/change-password",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resend Verification Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\",\r\n    \"password\": \"newpassword123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}auth/resend-verification",
+              "host": [
+                "{{L&F}}auth"
+              ],
+              "path": [
+                "resend-verification"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Colleges",
+      "item": [
+        {
+          "name": "Get Colleges",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}colleges?page=1&limit=10&search=gmail.com&isActive=true&sortBy=\"createdAt\"&sortOrder=\"desc\"",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "gmail.com"
+                },
+                {
+                  "key": "isActive",
+                  "value": "true"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "\"createdAt\""
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "\"desc\""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get College By ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}colleges/650000000000000000000111",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "650000000000000000000111"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create College",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "uuid": "45fd2347-433c-4c65-87fa-83eb1adf09a0",
+                  "src": "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748"
+                },
+                {
+                  "key": "name",
+                  "value": "Google College",
+                  "type": "text",
+                  "uuid": "f4820d99-33ee-494b-8ffe-1c448156bb4b"
+                },
+                {
+                  "key": "domain",
+                  "value": "gmail.com",
+                  "type": "text",
+                  "uuid": "e212072e-ca5f-427c-bbf3-dfcdc2942a25"
+                },
+                {
+                  "key": "shortName",
+                  "value": "GC",
+                  "type": "text",
+                  "uuid": "857dca96-a7d7-4fdd-8fd5-701ec05ddcc3"
+                },
+                {
+                  "key": "location",
+                  "value": "{\"address\": \"Naxal, Kathmandu\", \"city\": \"Kathmandu\", \"state\": \"Bagmati\", \"country\": \"Nepal\", \"coordinates\": [85.324, 27.717]}",
+                  "type": "text",
+                  "uuid": "b12ae479-59eb-4fc1-948e-6eb9afcdb0a5"
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"email\":\"info@heraldcollege.edu.np\",\"phone\":\"+977-1-4412345\",\"website\":\"https://heraldcollege.edu.np\"}",
+                  "type": "text",
+                  "uuid": "ea18f685-6239-47d1-a39d-ef83356d5aae"
+                },
+                {
+                  "key": "metadata",
+                  "value": "{}",
+                  "type": "text",
+                  "uuid": "4ca62961-51ab-4957-9790-7ebc0a1dca08"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}colleges",
+              "host": [
+                "{{L&F}}colleges"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update College",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "uuid": "45fd2347-433c-4c65-87fa-83eb1adf09a0",
+                  "src": "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                },
+                {
+                  "key": "name",
+                  "value": "Updated College Data",
+                  "type": "text",
+                  "uuid": "f4820d99-33ee-494b-8ffe-1c448156bb4b"
+                },
+                {
+                  "key": "domain",
+                  "value": "updated.domain.np",
+                  "type": "text",
+                  "uuid": "e212072e-ca5f-427c-bbf3-dfcdc2942a25"
+                },
+                {
+                  "key": "shortName",
+                  "value": "UPDATED",
+                  "type": "text",
+                  "uuid": "857dca96-a7d7-4fdd-8fd5-701ec05ddcc3"
+                },
+                {
+                  "key": "location",
+                  "value": "{\"address\": \"Naxal, Kathmandu\", \"city\": \"Kathmandu\", \"state\": \"Bagmati\", \"country\": \"Nepal\", \"coordinates\": [85.324, 27.717]}",
+                  "type": "text",
+                  "uuid": "b12ae479-59eb-4fc1-948e-6eb9afcdb0a5"
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"email\":\"info@heraldcollege.edu.np\",\"phone\":\"+977-1-4412345\",\"website\":\"https://heraldcollege.edu.np\"}",
+                  "type": "text",
+                  "uuid": "ea18f685-6239-47d1-a39d-ef83356d5aae"
+                },
+                {
+                  "key": "metadata",
+                  "value": "{UPDATED}",
+                  "type": "text",
+                  "uuid": "4ca62961-51ab-4957-9790-7ebc0a1dca08"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}colleges/69b7f5f75f239b28ac157bc8",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "69b7f5f75f239b28ac157bc8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isActive\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}colleges/69b7f5f75f239b28ac157bc8/status",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "69b7f5f75f239b28ac157bc8",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Domain",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"domain\": \"heraldcoll.edu.np\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}colleges/verify-domain",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "verify-domain"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete College",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isActive\": false\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}colleges/69b7ee3974bac5c55982f9c0",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "69b7ee3974bac5c55982f9c0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add College Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"adminId\": \"69b7bad10bf57c1db4c7911f\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}colleges/650000000000000000000001/admins",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "650000000000000000000001",
+                "admins"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove College Admin",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}colleges/650000000000000000000001/admins/69b7bad10bf57c1db4c7911f",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "650000000000000000000001",
+                "admins",
+                "69b7bad10bf57c1db4c7911f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET COLLEGE STATS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}colleges/650000000000000000000111/stats",
+              "host": [
+                "{{L&F}}colleges"
+              ],
+              "path": [
+                "650000000000000000000111",
+                "stats"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Lost Items",
+      "item": [
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro 13",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "some category",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05"
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47",
+                  "disabled": true
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items",
+              "host": [
+                "{{L&F}}lost-items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Posts",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items?collegeId=69bb97b3d3bcf315e3cd2e8d",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "id card",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "ID Cards",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000103",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "nearby",
+                  "value": "true",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "latitude",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "longitude",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "maxDistance",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "collegeId",
+                  "value": "69bb97b3d3bcf315e3cd2e8d"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trending Posts",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/trending?collegeId=650000000000000000000001&limit=5",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "trending"
+              ],
+              "query": [
+                {
+                  "key": "collegeId",
+                  "value": "650000000000000000000001"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Lost Item",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/search?q=macbook&collegeId=650000000000000000000001&category=Laptops&status=lost",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "macbook"
+                },
+                {
+                  "key": "collegeId",
+                  "value": "650000000000000000000001"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops"
+                },
+                {
+                  "key": "status",
+                  "value": "lost"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Items By Zone",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/zone/650000000000000000000102?collegeId=650000000000000000000001",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "zone",
+                "650000000000000000000102"
+              ],
+              "query": [
+                {
+                  "key": "collegeId",
+                  "value": "650000000000000000000001"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Nearby Items",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/nearby?collegeId=650000000000000000000001&latitude=27.717&longitude=85.324&maxDistance=500",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "nearby"
+              ],
+              "query": [
+                {
+                  "key": "collegeId",
+                  "value": "650000000000000000000001"
+                },
+                {
+                  "key": "latitude",
+                  "value": "27.717"
+                },
+                {
+                  "key": "longitude",
+                  "value": "85.324"
+                },
+                {
+                  "key": "maxDistance",
+                  "value": "500"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Post By ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/650000000000000000000201",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "650000000000000000000201"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Post By Me",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/user/me",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "user",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Interactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}lost-items/user/interactions",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "user",
+                "interactions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"claimed\",\r\n    \"foundBy\": \"650000000000000000000022\" // User ID who found it (optional)\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/status",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Post",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/verify",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "verify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Images to Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f121528-49c3-42a0-b840-86990a6a0ad9",
+                    "postman-cloud:///1f121527-c15e-42c0-b3e8-3fe25740d425",
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6",
+                  "disabled": true
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef",
+                  "disabled": true
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf",
+                  "disabled": true
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3",
+                  "disabled": true
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47",
+                  "disabled": true
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b",
+                  "disabled": true
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d",
+                  "disabled": true
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d",
+                  "disabled": true
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/images",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "images"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Like Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f121528-49c3-42a0-b840-86990a6a0ad9",
+                    "postman-cloud:///1f121527-c15e-42c0-b3e8-3fe25740d425",
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6",
+                  "disabled": true
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef",
+                  "disabled": true
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf",
+                  "disabled": true
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3",
+                  "disabled": true
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47",
+                  "disabled": true
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b",
+                  "disabled": true
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d",
+                  "disabled": true
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d",
+                  "disabled": true
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/like",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unlike Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/like",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Share Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"sharedOn\": \"message\" // \"timeline\", \"message\", \"whatsapp\", \"other\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/share",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "share"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Flag Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reason\": \"other\", // \"inappropriate\", \"spam\", \"fake\", \"duplicate\", \"other\"\r\n    \"description\": \"This item seems fake\" // Optional\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/flag",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "flag"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Soft Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reason\": \"other\", // \"inappropriate\", \"spam\", \"fake\", \"duplicate\", \"other\"\r\n    \"description\": \"This item seems fake\" // Optional\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Permanent Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reason\": \"other\", // \"inappropriate\", \"spam\", \"fake\", \"duplicate\", \"other\"\r\n    \"description\": \"This item seems fake\" // Optional\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/permanent",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "permanent"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Flagged Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}lost-items/admin/flagged",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "admin",
+                "flagged"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resolve Flagged Post",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"action\": \"keep\" // \"keep\" or \"remove\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/69b826ccc23959e5c4456f98/resolve-flags",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b826ccc23959e5c4456f98",
+                "resolve-flags"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Make Image Primary",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}lost-items/69b83adb27638168689452bc/images/lost-found%2F650000000000000000000001%2Fjcdovcbj3e0avc92071g/primary",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b83adb27638168689452bc",
+                "images",
+                "lost-found%2F650000000000000000000001%2Fjcdovcbj3e0avc92071g",
+                "primary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Image",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}lost-items/69b83adb27638168689452bc/images/lost-found%2F650000000000000000000001%2Fsphl4sjjxb8jnfv9gigb",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "69b83adb27638168689452bc",
+                "images",
+                "lost-found%2F650000000000000000000001%2Fsphl4sjjxb8jnfv9gigb"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Get Comments Of Singe Post",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "images",
+                  "type": "file",
+                  "uuid": "8128d8e6-ca62-431a-bca1-905c0232acab",
+                  "src": [
+                    "postman-cloud:///1f1214d3-8437-4760-ab05-bbb973fda286",
+                    "postman-cloud:///1f1212c6-bde8-49a0-8fb0-fbd56b714748",
+                    "postman-cloud:///1f12073a-6e8f-4990-967d-6def2755aca7"
+                  ]
+                },
+                {
+                  "key": "itemName",
+                  "value": "MacBook Pro",
+                  "type": "text",
+                  "uuid": "5b75c186-52b8-4de0-aaa0-a7849ce836a6"
+                },
+                {
+                  "key": "description",
+                  "value": "Silver MacBook Pro with stickers",
+                  "type": "text",
+                  "uuid": "761df022-8ce3-44e0-b241-387713f6408c"
+                },
+                {
+                  "key": "category",
+                  "value": "Laptops",
+                  "type": "text",
+                  "uuid": "44019f07-789c-4c8d-bc27-b88831a422ef"
+                },
+                {
+                  "key": "subcategory",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "35d82e15-a901-4ed1-b830-c35a4982ca05",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "lost",
+                  "type": "text",
+                  "uuid": "a2ed0ea1-da91-4b4d-9006-a2c12ae601cf"
+                },
+                {
+                  "key": "locationDescription",
+                  "value": "Main Library, 2nd floor",
+                  "type": "text",
+                  "uuid": "f5f5b728-3ddf-47cc-afc8-f29c498238a3"
+                },
+                {
+                  "key": "zoneId",
+                  "value": "650000000000000000000101",
+                  "type": "text",
+                  "uuid": "8ade60bd-2a71-43bb-bfdd-f957ff27ff47"
+                },
+                {
+                  "key": "specificLocation",
+                  "value": "{\"building\": \"Library\",\"floor\": 2,\"room\": \"L201\",\"coordinates\": [85.325, 27.718]}",
+                  "type": "text",
+                  "uuid": "74c98363-6a73-4d8b-b3bf-85675210734b"
+                },
+                {
+                  "key": "dateLost",
+                  "value": "2024-03-15T10:30:00.000Z",
+                  "type": "text",
+                  "uuid": "bade29c4-4cc5-44e5-8633-d822a6bb9d6d"
+                },
+                {
+                  "key": "dateFound",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1f3c9e79-16e4-4b1c-b37e-d7f9adf6cd38",
+                  "disabled": true
+                },
+                {
+                  "key": "contactInfo",
+                  "value": "{\"phone\": \"+977-9841234567\",\"email\": \"user@college.edu\",\"showContact\": true}",
+                  "type": "text",
+                  "uuid": "ad2d958d-5c96-47d7-a2ad-3ad405a1196d"
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"laptop\", \"macbook\", \"apple\"]",
+                  "type": "text",
+                  "uuid": "414f840e-0409-400e-92a4-03b565e12b83"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/650000000000000000000201/comments?page=1&limit=10&sort=latest&includeReplies=true",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "650000000000000000000201",
+                "comments"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "sort",
+                  "value": "latest",
+                  "type": "text"
+                },
+                {
+                  "key": "includeReplies",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Comment On Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"content\": \"This is a great post! #help @john\",\r\n    \"parentCommentId\": null,\r\n    \"mentions\": [\r\n        {\r\n            \"userId\": \"650000000000000000000022\",\r\n            \"indices\": [\r\n                30,\r\n                35\r\n            ]\r\n        }\r\n    ],\r\n    \"media\": [\r\n        {\r\n            \"url\": \"https://res.cloudinary.com/.../image.jpg\",\r\n            \"publicId\": \"comments/image123\",\r\n            \"type\": \"image\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/650000000000000000000201/comments",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "650000000000000000000201",
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reply Comment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"content\": \"I agree with you! and this is a test reply comment !\",\r\n    \"parentCommentId\": \"650000000000000000000301\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}lost-items/650000000000000000000201/comments",
+              "host": [
+                "{{L&F}}lost-items"
+              ],
+              "path": [
+                "650000000000000000000201",
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Comment Replies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}comments/650000000000000000000301/replies?page=1&limit=10",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "650000000000000000000301",
+                "replies"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Comment By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}comments/650000000000000000000301",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "650000000000000000000301"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Comments By Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}users/69b7bad10bf57c1db4c7911f/comments?page=1&limit=20",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "69b7bad10bf57c1db4c7911f",
+                "comments"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Comment",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"content\": \"Updated comment content with #newhashtag\",\r\n    \"mentions\": [\r\n        {\r\n            \"userId\": \"650000000000000000000023\",\r\n            \"indices\": [\r\n                10,\r\n                15\r\n            ]\r\n        }\r\n    ],\r\n    \"media\": [\r\n        {\r\n            \"url\": \"https://res.cloudinary.com/.../new-image.jpg\",\r\n            \"publicId\": \"comments/new-image\",\r\n            \"type\": \"image\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}comments/69b8f24fc09beb91bc2d5da5",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f24fc09beb91bc2d5da5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Link Comment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"content\": \"Updated comment content with #newhashtag\",\r\n    \"mentions\": [\r\n        {\r\n            \"userId\": \"650000000000000000000023\",\r\n            \"indices\": [\r\n                10,\r\n                15\r\n            ]\r\n        }\r\n    ],\r\n    \"media\": [\r\n        {\r\n            \"url\": \"https://res.cloudinary.com/.../new-image.jpg\",\r\n            \"publicId\": \"comments/new-image\",\r\n            \"type\": \"image\"\r\n        }\r\n    ]\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}comments/69b8f24fc09beb91bc2d5da5/like",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f24fc09beb91bc2d5da5",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unlike Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}comments/69b8f24fc09beb91bc2d5da5/like",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f24fc09beb91bc2d5da5",
+                "like"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Flag Comment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"reason\": \"harassment\" //\"spam\", \"harassment\", \"hate_speech\", \"inappropriate\", \"other\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}comments/69b8f846c09beb91bc2d5e83/flag",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f846c09beb91bc2d5e83",
+                "flag"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Soft Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"reason\": \"spam\" //\"spam\", \"harassment\", \"hate_speech\", \"inappropriate\", \"other\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}comments/69b8f24fc09beb91bc2d5da5",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f24fc09beb91bc2d5da5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pin/Unpin Comment",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isPinned\": true // or false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}comments/69b8f1b5c09beb91bc2d5d97/pin",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f1b5c09beb91bc2d5d97",
+                "pin"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Hide/Unhide Comment",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isHidden\": true // or false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}comments/69b8f1b5c09beb91bc2d5d97/hide",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f1b5c09beb91bc2d5d97",
+                "hide"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Permanent Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isHidden\": true // or false\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}comments/69b8f1b5c09beb91bc2d5d97/permanent",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                "69b8f1b5c09beb91bc2d5d97",
+                "permanent"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Flagged Comments",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isHidden\": true // or false\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}admin/comments/flagged?page=1&limit=10",
+              "host": [
+                "{{L&F}}admin"
+              ],
+              "path": [
+                "comments",
+                "flagged"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resolve Flagged Comment",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"action\": \"keep\"  // or \"remove\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}comments/:commentId/resolve-flags",
+              "host": [
+                "{{L&F}}comments"
+              ],
+              "path": [
+                ":commentId",
+                "resolve-flags"
+              ],
+              "variable": [
+                {
+                  "key": "commentId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Students",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"reason\": \"harassment\" //\"spam\", \"harassment\", \"hate_speech\", \"inappropriate\", \"other\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}users/students?page=1&limit=10&search&isActive&collegeId&isEmailVerified=false&sortBy=\"createdAt\"&sortOrder=\"desc\"",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "students"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": null
+                },
+                {
+                  "key": "isActive",
+                  "value": null
+                },
+                {
+                  "key": "collegeId",
+                  "value": null
+                },
+                {
+                  "key": "isEmailVerified",
+                  "value": "false"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "\"createdAt\""
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "\"desc\""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Admins",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"reason\": \"harassment\" //\"spam\", \"harassment\", \"hate_speech\", \"inappropriate\", \"other\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}users/admins?page=1&limit=10&search&isActive&collegeId&sortBy=\"createdAt\"&sortOrder=\"desc\"",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "admins"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": null
+                },
+                {
+                  "key": "isActive",
+                  "value": null
+                },
+                {
+                  "key": "collegeId",
+                  "value": null
+                },
+                {
+                  "key": "sortBy",
+                  "value": "\"createdAt\""
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "\"desc\""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}users/stats",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}users/69b93e1138e1ad4083079243",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "69b93e1138e1ad4083079243"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"New Admin\",\r\n    \"email\": \"admin@heraldcollege.edu.np\",\r\n    \"password\": \"password123\",\r\n    \"collegeId\": \"650000000000000000000001\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}users",
+              "host": [
+                "{{L&F}}users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Bishal Thapa Updated\",\r\n  \"email\": \"bishal.updated@heraldcollege.edu.np\",\r\n  \"avatar\": \"https://res.cloudinary.com/.../new-avatar.jpg\",\r\n  \"isActive\": true,\r\n  \"collegeId\": \"650000000000000000000001\",\r\n  \"chatPrivacy\": {\r\n    \"allowMessagesFrom\": \"verified_only\",\r\n    \"showReadReceipts\": false\r\n  },\r\n  \"notificationPreferences\": {\r\n    \"email\": true,\r\n    \"push\": false,\r\n    \"matches\": true,\r\n    \"messages\": true,\r\n    \"comments\": false\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}users/69b93e1138e1ad4083079243",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "69b93e1138e1ad4083079243"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}users/650000000000000000000011/toggle-status",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "650000000000000000000011",
+                "toggle-status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Soft Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}users/650000000000000000000011",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "650000000000000000000011"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Permanent Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}users/650000000000000000000011/permanent",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "650000000000000000000011",
+                "permanent"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify User Email",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Bishal Thapa Updated\",\r\n  \"email\": \"bishal.updated@heraldcollege.edu.np\",\r\n  \"avatar\": \"https://res.cloudinary.com/.../new-avatar.jpg\",\r\n  \"isActive\": true,\r\n  \"collegeId\": \"650000000000000000000001\",\r\n  \"chatPrivacy\": {\r\n    \"allowMessagesFrom\": \"verified_only\",\r\n    \"showReadReceipts\": false\r\n  },\r\n  \"notificationPreferences\": {\r\n    \"email\": true,\r\n    \"push\": false,\r\n    \"matches\": true,\r\n    \"messages\": true,\r\n    \"comments\": false\r\n  }\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}users/650000000000000000000012/verify-email",
+              "host": [
+                "{{L&F}}users"
+              ],
+              "path": [
+                "650000000000000000000012",
+                "verify-email"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "College Zones",
+      "item": [
+        {
+          "name": "Get Zones",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"super@admin.com\",\r\n    \"password\": \"00000000\",\r\n    \"totp\":\"613490\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}zones?collegeId=650000000000000000000001&page=1&limit=10&type=library",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "query": [
+                {
+                  "key": "collegeId",
+                  "value": "650000000000000000000001"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "type",
+                  "value": "library"
+                },
+                {
+                  "key": "search",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Zone By ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"ramanthaqori@gmail.com\",\r\n    \"password\": \"Password@123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}zones/650000000000000000000103",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "path": [
+                "650000000000000000000103"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Zone Nearby",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"super@admin.com\",\r\n    \"password\": \"00000000\",\r\n    \"totp\":\"613490\"\r\n}"
+            },
+            "url": {
+              "raw": "{{L&F}}zones/nearby?collegeId=650000000000000000000001&latitude=27.717&longitude=85.324&maxDistance=1000",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "path": [
+                "nearby"
+              ],
+              "query": [
+                {
+                  "key": "collegeId",
+                  "value": "650000000000000000000001"
+                },
+                {
+                  "key": "page",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "latitude",
+                  "value": "27.717"
+                },
+                {
+                  "key": "longitude",
+                  "value": "85.324"
+                },
+                {
+                  "key": "maxDistance",
+                  "value": "1000",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Zone",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Another Central Library\",\r\n    \"type\": \"library\",\r\n    \"collegeId\": \"69bb97b3d3bcf315e3cd2e8d\",\r\n    \"location\": {\r\n        \"coordinates\": [\r\n            85.324,\r\n            27.717\r\n        ],\r\n        \"address\": \"Naxal, Kathmandu\"\r\n    },\r\n    \"description\": \"Main library with study spaces and book collection\",\r\n    \"building\": \"Main Block\",\r\n    \"floor\": 2,\r\n    \"roomNumbers\": [\r\n        \"L201\",\r\n        \"L202\",\r\n        \"L203\"\r\n    ],\r\n    \"isIndoor\": true,\r\n    \"tags\": [\r\n        \"library\",\r\n        \"study\",\r\n        \"books\",\r\n        \"quiet\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}zones",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Zone",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Upadte Central Library\",\r\n    \"type\": \"library\",\r\n    \"collegeId\": \"69bb97b3d3bcf315e3cd2e8d\",\r\n    \"location\": {\r\n        \"coordinates\": [\r\n            85.324,\r\n            27.717\r\n        ],\r\n        \"address\": \"Naxal, Kathmandu\"\r\n    },\r\n    \"description\": \"Updated Main library with study spaces and book collection\",\r\n    \"building\": \"Main Block\",\r\n    \"floor\": 2,\r\n    \"roomNumbers\": [\r\n        \"L201\",\r\n        \"L202\",\r\n        \"L203\"\r\n    ],\r\n    \"isIndoor\": true,\r\n    \"tags\": [\r\n        \"library\",\r\n        \"study\",\r\n        \"books\",\r\n        \"quiet\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}zones/69c23c66a8f8a18c8d86b782",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "path": [
+                "69c23c66a8f8a18c8d86b782"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Zone",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{L&F}}zones/69c23c66a8f8a18c8d86b782",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "path": [
+                "69c23c66a8f8a18c8d86b782"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Rooms to Zone",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"roomNumber\": \"L401\",\r\n    \"collegeId\": \"69bb97b3d3bcf315e3cd2e8d\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}zones/69c236f279087db13fefb30a/rooms",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "path": [
+                "69c236f279087db13fefb30a",
+                "rooms"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Room form Zone",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"collegeId\": \"69bb97b3d3bcf315e3cd2e8d\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{L&F}}zones/69c236f279087db13fefb30a/rooms/L401",
+              "host": [
+                "{{L&F}}zones"
+              ],
+              "path": [
+                "69c236f279087db13fefb30a",
+                "rooms",
+                "L401"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
