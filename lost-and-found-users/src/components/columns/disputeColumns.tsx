@@ -1,4 +1,3 @@
-// columns/disputeColumns.tsx
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +21,6 @@ import {
   UserCheck,
   Calendar,
   FileText,
-  Shield,
 } from "lucide-react";
 import { format } from "date-fns";
 import type { Dispute } from "@/types/dispute.types";
@@ -86,10 +84,8 @@ const priorityConfig = {
 };
 
 export const disputeColumns = ({
-  onView,
   onAddMessage,
   onUpdateStatus,
-  onResolve,
   onEscalate,
   onAssignAdmin,
   onArchive,

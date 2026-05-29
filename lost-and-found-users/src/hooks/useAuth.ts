@@ -58,12 +58,8 @@ export const useForgotPassword = () => {
   return useMutation({
     mutationFn: (data: ForgotPasswordRequest) => authApis.forgotPassword(data),
     onSuccess: (data) => {
-      //   toast.success(
-      //     data.message || "Password reset email sent. Please check your inbox.",
-      //   );
-
       toast.success("Password reset email sent successfully!", {
-        description: "Please check your inbox and spam folder.",
+        description: data.message || "Please check your inbox and spam folder.",
         duration: 5000,
       });
     },

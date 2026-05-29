@@ -6,7 +6,6 @@ import {
   User,
   Award,
   ChevronDown,
-  Bell,
   Package,
   LogOut,
 } from "lucide-react";

@@ -27,15 +27,11 @@ router.get("/me", getUserById); // Special case - gets current user
 
 //  STUDENT ROUTES
 // Get all students (Super Admin or College Admin)
-router.get(
-  "/students",
-  requireRole(["super_admin", "college_admin"]),
-  getStudents,
-);
+router.get("/students", getStudents);
 
 //  COLLEGE ADMIN ROUTES
-// Get all college admins (Super Admin only)
-router.get("/admins", requireRole(["super_admin"]), getCollegeAdmins);
+// Get all college admins
+router.get("/admins", getCollegeAdmins);
 
 //  USER STATISTICS
 // Get user statistics (Super Admin or College Admin)

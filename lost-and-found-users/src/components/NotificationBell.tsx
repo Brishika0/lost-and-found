@@ -1,5 +1,4 @@
-// components/NotificationBell.tsx
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "@/contexts/NotificationContext";
 import {
@@ -8,9 +7,7 @@ import {
   Heart,
   Scale,
   CheckCircle,
-  AlertTriangle,
   Award,
-  UserCheck,
   Package,
   Clock,
   ChevronRight,
@@ -23,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -91,16 +87,8 @@ export const NotificationBell = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"all" | "unread">("all");
-  const {
-    notifications,
-    unreadCount,
-    isLoading,
-    markAsRead,
-    markAllAsRead,
-    refetchNotifications,
-    filters,
-    setFilters,
-  } = useNotifications();
+  const { notifications, unreadCount, isLoading, markAsRead, markAllAsRead } =
+    useNotifications();
 
   // Filter notifications based on active tab
   const filteredNotifications =

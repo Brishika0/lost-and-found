@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -20,7 +20,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -34,7 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronDown, Search, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 interface DataTableProps<TData> {
   data: TData[];
@@ -48,6 +47,10 @@ interface DataTableProps<TData> {
   // onSearch?: (term: string) => void;
   isLoading?: boolean;
   toolbar?: ReactNode;
+
+  enableRowSelection?: boolean;
+  selectedRows?: string[];
+  onSelectedRowsChange?: (rows: string[]) => void;
 }
 
 export function DataTable<TData>({
@@ -185,7 +188,7 @@ export function DataTable<TData>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results found.
+                  No results found. Try changing filters.
                 </TableCell>
               </TableRow>
             )}

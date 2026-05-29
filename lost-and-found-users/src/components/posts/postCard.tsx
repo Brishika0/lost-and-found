@@ -147,7 +147,7 @@ export const Post: React.FC<PostProps> = ({
     const postUrl = `${window.location.origin}/post/${item._id}`;
     await startConversation(
       item.reportedBy,
-      `Hi! I'd like to claim this item — I believe it belongs to me.\n\n📦 ${item.itemName}\n📍 ${item.locationDescription}\n\n${postUrl}`,
+      `${item.status === "lost" ? "Hi! I'd like to return this item — I believe i have found this item." : "Hi! I'd like to claim this item — I believe it belongs to me."}\n\n📦 ${item.itemName}\n📍 ${item.locationDescription}\n\n${postUrl}`,
       {
         postId: item._id,
         postUrl,
@@ -256,14 +256,18 @@ export const Post: React.FC<PostProps> = ({
                   </DropdownMenuItem>
                 </>
               )}
-              {!isOwner && item.status === "lost" && (
+              {!isOwner && (
                 <DropdownMenuItem
                   onClick={handleClaimItem}
                   disabled={isClaiming}
                   className="text-blue-600"
                 >
                   <MessageCircle className="mr-2 h-4 w-4" />
-                  {isClaiming ? "Opening chat..." : "Claim item"}
+                  {isClaiming
+                    ? "Opening chat..."
+                    : item.status === "lost"
+                      ? "Return Item"
+                      : "Claim item"}
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem onClick={copyLink}>

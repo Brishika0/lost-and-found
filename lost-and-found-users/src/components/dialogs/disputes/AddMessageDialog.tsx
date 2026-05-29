@@ -1,4 +1,3 @@
-// components/disputes/AddMessageDialog.tsx
 import { useState } from "react";
 import {
   Dialog,

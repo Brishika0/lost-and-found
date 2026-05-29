@@ -54,6 +54,7 @@ export interface UpdateStatusRequest {
   foundBy?: string;
   claimedBy?: string;
   returnedTo?: string;
+  rewardedTo?: string;
 }
 
 export interface GetLostItemsQuery {

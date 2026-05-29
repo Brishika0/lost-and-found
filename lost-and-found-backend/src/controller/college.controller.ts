@@ -415,9 +415,7 @@ export const UpdateCollege = async (
       }
     }
 
-    college.updatedBy = new mongoose.Types.ObjectId(
-      "0000000000000000000000001",
-    );
+    college.updatedBy = new mongoose.Types.ObjectId("000000000000000000000001");
 
     await college.save();
 
@@ -485,7 +483,7 @@ export const UpdateCollegeStatus = async (
       id,
       {
         $set: { isActive },
-        updatedBy: new mongoose.Types.ObjectId("0000000000000000000000001"),
+        updatedBy: new mongoose.Types.ObjectId("000000000000000000000001"),
       },
       { new: true },
     )
@@ -651,9 +649,7 @@ export const AddCollegeAdmin = async (
 
     // STEP 1: Add user to college's adminIds
     college.adminIds.push(new mongoose.Types.ObjectId(adminId));
-    college.updatedBy = new mongoose.Types.ObjectId(
-      "000000000000000000000001",
-    );
+    college.updatedBy = new mongoose.Types.ObjectId("000000000000000000000001");
     await college.save();
 
     // STEP 2: Update user's role to college_admin
@@ -746,9 +742,7 @@ export const RemoveCollegeAdmin = async (
     college.adminIds = college.adminIds.filter(
       (id) => id.toString() !== adminId,
     );
-    college.updatedBy = new mongoose.Types.ObjectId(
-      "0000000000000000000000001",
-    );
+    college.updatedBy = new mongoose.Types.ObjectId("000000000000000000000001");
     await college.save();
 
     // STEP 2: Change user's role back to student

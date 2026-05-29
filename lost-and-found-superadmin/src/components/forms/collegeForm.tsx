@@ -34,6 +34,7 @@ import {
   LocationMarker,
   mapContainerStyle,
 } from "@/utils/leafletHelper";
+import { useNavigate } from "react-router-dom";
 
 interface CollegeFormProps {
   initialData?: College | null;
@@ -47,6 +48,7 @@ export function CollegeForm({ initialData }: CollegeFormProps) {
   const [isMapReady, setIsMapReady] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const isUserAction = useRef(false);
+  const navigate = useNavigate();
 
   const createCollege = useCreateCollege();
   const updateCollege = useUpdateCollege();
@@ -59,7 +61,6 @@ export function CollegeForm({ initialData }: CollegeFormProps) {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    reset,
     watch,
     clearErrors,
   } = useForm<CollegeFormData | CreateCollegeFormData | UpdateCollegeFormData>({
@@ -204,10 +205,15 @@ export function CollegeForm({ initialData }: CollegeFormProps) {
           updateData.logo = imageFile;
         }
 
-        await updateCollege.mutateAsync({
-          id: initialData._id,
-          data: updateData,
-        });
+        await updateCollege.mutateAsync(
+          {
+            id: initialData._id,
+            data: updateData,
+          },
+          {
+            onSuccess: () => navigate("/colleges"),
+          },
+        );
       } else {
         // CREATE MODE - ensure logo is a File
         if (!imageFile) {
@@ -223,7 +229,9 @@ export function CollegeForm({ initialData }: CollegeFormProps) {
           contactInfo: values.contactInfo,
         };
 
-        await createCollege.mutateAsync(createData);
+        await createCollege.mutateAsync(createData, {
+          onSuccess: () => navigate("/colleges"),
+        });
       }
     } catch (error) {
       console.error("Form submission error:", error);

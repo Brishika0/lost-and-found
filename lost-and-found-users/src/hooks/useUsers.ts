@@ -112,12 +112,12 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateUserPayload }) =>
       userApis.updateUser(id, data),
-    onSuccess: (data, variables) => {
+    onSuccess: (data) => {
       toast.success(`User updated successfully!`);
       queryClient.invalidateQueries({ queryKey: userKeys.students() });
       queryClient.invalidateQueries({ queryKey: userKeys.admins() });
       queryClient.invalidateQueries({
-        queryKey: userKeys.detail(variables.id),
+        queryKey: userKeys.detail(data.data._id),
       });
     },
     onError: (error: any) => {
@@ -219,8 +219,6 @@ export const useBulkVerifyEmails = () => {
 
 //  RESEND VERIFICATION
 export const useResendVerification = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (id: string) => userApis.resendVerification(id),
     onSuccess: () => {

@@ -7,6 +7,149 @@ import { AuthRequest } from "../types/middlewareTypes";
 
 // CREATE
 
+// export const addComment = async (
+//   req: AuthRequest,
+//   res: Response,
+// ): Promise<void> => {
+//   try {
+//     const { itemId } = req.params;
+//     const { content, parentCommentId, mentions, media } = req.body;
+
+//     // Validate itemId
+//     if (!mongoose.Types.ObjectId.isValid(itemId as any)) {
+//       res.status(400).json({
+//         success: false,
+//         message: "Invalid item ID",
+//       });
+//       return;
+//     }
+
+//     // Check authentication
+//     if (!req.user?._id) {
+//       res.status(401).json({
+//         success: false,
+//         message: "Not authenticated",
+//       });
+//       return;
+//     }
+
+//     // Check if lost item exists
+//     const lostItem = await LostItem.findById(itemId);
+//     if (!lostItem) {
+//       res.status(404).json({
+//         success: false,
+//         message: "Lost item not found",
+//       });
+//       return;
+//     }
+
+//     // Validate content
+//     if (!content || content.trim().length === 0) {
+//       res.status(400).json({
+//         success: false,
+//         message: "Comment content is required",
+//       });
+//       return;
+//     }
+
+//     // If this is a reply, validate parent comment
+//     if (parentCommentId) {
+//       if (!mongoose.Types.ObjectId.isValid(parentCommentId)) {
+//         res.status(400).json({
+//           success: false,
+//           message: "Invalid parent comment ID",
+//         });
+//         return;
+//       }
+
+//       const parentComment = await Comment.findById(parentCommentId);
+//       if (!parentComment) {
+//         res.status(404).json({
+//           success: false,
+//           message: "Parent comment not found",
+//         });
+//         return;
+//       }
+
+//       // Check if parent comment belongs to the same lost item
+//       if (parentComment.itemId.toString() !== itemId) {
+//         res.status(400).json({
+//           success: false,
+//           message: "Parent comment does not belong to this item",
+//         });
+//         return;
+//       }
+
+//       // Check if trying to reply to a reply (Instagram-style - only one level)
+//       if (parentComment.parentCommentId) {
+//         res.status(400).json({
+//           success: false,
+//           message:
+//             "Cannot reply to a reply. Only one level of replies is allowed.",
+//         });
+//         return;
+//       }
+//     }
+
+//     // Process mentions to get usernames
+//     const processedMentions = [];
+//     if (mentions && mentions.length > 0) {
+//       for (const mention of mentions) {
+//         const user = await User.findById(mention.userId).select("name");
+//         if (user) {
+//           processedMentions.push({
+//             userId: mention.userId,
+//             username: user.name,
+//             indices: mention.indices,
+//           });
+//         }
+//       }
+//     }
+
+//     // Extract hashtags from content
+//     const hashtagRegex = /#(\w+)/g;
+//     const hashtags =
+//       content.match(hashtagRegex)?.map((tag: any) => tag.toLowerCase()) || [];
+
+//     // Create comment
+//     const comment = await Comment.create({
+//       content,
+//       userId: req.user._id,
+//       itemId,
+//       parentCommentId: parentCommentId || null,
+//       mentions: processedMentions,
+//       hashtags,
+//       media: media || [],
+//       likes: [],
+//       likesCount: 0,
+//       isEdited: false,
+//       editHistory: [],
+//       isFlagged: false,
+//       flagCount: 0,
+//       flags: [],
+//       isPinned: false,
+//       isHidden: false,
+//       isActive: true,
+//       replyCount: 0,
+//     });
+
+//     // Populate user details
+//     await comment.populate("userId", "name email avatar");
+
+//     res.status(201).json({
+//       success: true,
+//       message: "Comment added successfully",
+//       data: comment,
+//     });
+//   } catch (error: any) {
+//     console.error("Add comment error:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || "Error adding comment",
+//     });
+//   }
+// };
+
 export const addComment = async (
   req: AuthRequest,
   res: Response,
@@ -34,7 +177,10 @@ export const addComment = async (
     }
 
     // Check if lost item exists
-    const lostItem = await LostItem.findById(itemId);
+    const lostItem = await LostItem.findById(itemId).populate(
+      "reportedBy",
+      "_id name",
+    );
     if (!lostItem) {
       res.status(404).json({
         success: false,
@@ -52,6 +198,9 @@ export const addComment = async (
       return;
     }
 
+    let parentComment = null;
+    let isReply = false;
+
     // If this is a reply, validate parent comment
     if (parentCommentId) {
       if (!mongoose.Types.ObjectId.isValid(parentCommentId)) {
@@ -62,7 +211,10 @@ export const addComment = async (
         return;
       }
 
-      const parentComment = await Comment.findById(parentCommentId);
+      parentComment = await Comment.findById(parentCommentId).populate(
+        "userId",
+        "_id name",
+      );
       if (!parentComment) {
         res.status(404).json({
           success: false,
@@ -80,7 +232,7 @@ export const addComment = async (
         return;
       }
 
-      // Check if trying to reply to a reply (Instagram-style - only one level)
+      // Check if trying to reply to a reply
       if (parentComment.parentCommentId) {
         res.status(400).json({
           success: false,
@@ -89,6 +241,8 @@ export const addComment = async (
         });
         return;
       }
+
+      isReply = true;
     }
 
     // Process mentions to get usernames
@@ -135,6 +289,57 @@ export const addComment = async (
 
     // Populate user details
     await comment.populate("userId", "name email avatar");
+
+    //  CREATE NOTIFICATIONS
+
+    const Notification = mongoose.model("Notification");
+
+    // 1. Notify the post owner about the comment (if commenter is not the owner)
+    if (lostItem.reportedBy._id.toString() !== req.user._id.toString()) {
+      const commentPreview =
+        content.length > 50 ? content.substring(0, 50) + "..." : content;
+
+      await Notification.create({
+        userId: lostItem.reportedBy._id,
+        type: "comment",
+        title: "New Comment on Your Post",
+        message: `${req.user.name} commented on "${lostItem.itemName}": "${commentPreview}"`,
+        priority: "medium",
+        data: {
+          postId: itemId,
+          commentId: comment._id,
+          userId: req.user._id,
+          postTitle: lostItem.itemName,
+          commentContent: commentPreview,
+        },
+      });
+    }
+
+    // 2. If it's a reply, notify the parent comment owner
+    if (
+      isReply &&
+      parentComment &&
+      parentComment.userId._id.toString() !== req.user._id.toString()
+    ) {
+      const replyPreview =
+        content.length > 50 ? content.substring(0, 50) + "..." : content;
+
+      await Notification.create({
+        userId: parentComment.userId._id,
+        type: "reply",
+        title: "New Reply to Your Comment",
+        message: `${req.user.name} replied to your comment: "${replyPreview}"`,
+        priority: "medium",
+        data: {
+          postId: itemId,
+          commentId: comment._id,
+          parentCommentId: parentCommentId,
+          userId: req.user._id,
+          postTitle: lostItem.itemName,
+          commentContent: replyPreview,
+        },
+      });
+    }
 
     res.status(201).json({
       success: true,
@@ -812,6 +1017,25 @@ export const likeComment = async (
     }
 
     await comment.like(new mongoose.Types.ObjectId(req.user._id));
+
+    //  CREATE NOTIFICATION
+    // Notify comment owner about like (if liker is not the owner)
+    if (comment.userId._id.toString() !== req.user._id.toString()) {
+      const Notification = mongoose.model("Notification");
+
+      await Notification.create({
+        userId: comment.userId._id,
+        type: "like",
+        title: "Someone Liked Your Comment",
+        message: `${req.user.name} liked your comment.`,
+        priority: "low",
+        data: {
+          postId: comment.itemId._id,
+          commentId: comment._id,
+          userId: req.user._id,
+        },
+      });
+    }
 
     res.status(200).json({
       success: true,

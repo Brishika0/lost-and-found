@@ -9,10 +9,12 @@ export type NotificationType =
   | "item_returned"
   | "dispute_update"
   | "comment"
+  | "reply"
   | "like"
   | "share"
   | "admin_approval"
-  | "flag_resolved";
+  | "flag_resolved"
+  | "reward_earned";
 
 export type NotificationPriority = "low" | "medium" | "high";
 
@@ -97,10 +99,12 @@ const notificationSchema = new Schema<
         "item_returned",
         "dispute_update",
         "comment",
+        "reply",
         "like",
         "share",
         "admin_approval",
         "flag_resolved",
+        "reward_earned",
       ],
       required: true,
       index: true,

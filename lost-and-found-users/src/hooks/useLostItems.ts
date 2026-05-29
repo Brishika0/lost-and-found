@@ -150,9 +150,11 @@ export const useCreateLostItem = () => {
       images?: File[];
     }) => lostItemApis.createLostItem(data, images),
 
-    onSuccess: (response, variables) => {
-      toast.success(response.message || "Item created successfully");
-
+    onSuccess: (response) => {
+      toast.success(
+        response.message ||
+          "Item created successfully. Please wait for admin to verify the post.",
+      );
       // Invalidate lists to refresh
       queryClient.invalidateQueries({ queryKey: lostItemKeys.lists() });
     },

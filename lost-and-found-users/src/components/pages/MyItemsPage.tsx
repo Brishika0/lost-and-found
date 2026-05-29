@@ -1,82 +1,28 @@
-// pages/MyItemsPage.tsx
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMyLostItems } from "@/hooks/useLostItems";
 import { formatNumber } from "@/utils/formatUtils";
 import {
   Package,
-  Eye,
-  Heart,
-  MessageCircle,
-  Clock,
-  Filter,
-  ChevronLeft,
-  ChevronRight,
   Loader2,
   AlertCircle,
   CheckCircle,
-  XCircle,
-  TrendingUp,
   Sparkles,
-  Flame,
   Search,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Post } from "@/components/posts/postCard";
 import { Navbar } from "@/components/navbar";
-import type { LostItem, ItemStatus } from "@/types/lostItem.types";
-
-// Status Configuration
-const statusConfig: Record<
-  ItemStatus,
-  { label: string; color: string; bgColor: string; icon: any }
-> = {
-  lost: {
-    label: "Lost",
-    color: "text-red-600",
-    bgColor: "bg-red-100",
-    icon: AlertCircle,
-  },
-  found: {
-    label: "Found",
-    color: "text-green-600",
-    bgColor: "bg-green-100",
-    icon: CheckCircle,
-  },
-  claimed: {
-    label: "Claimed",
-    color: "text-blue-600",
-    bgColor: "bg-blue-100",
-    icon: Package,
-  },
-  returned: {
-    label: "Returned",
-    color: "text-purple-600",
-    bgColor: "bg-purple-100",
-    icon: CheckCircle,
-  },
-};
+import type { ItemStatus } from "@/types/lostItem.types";
 
 // Post Skeleton
 const PostSkeleton = () => (
@@ -170,22 +116,11 @@ const StatsCard = ({
 // MAIN COMPONENT
 export default function MyItemsPage() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<ItemStatus | "all">("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isSticky, setIsSticky] = useState(false);
   const navbarRef = useRef<HTMLDivElement>(null);
-
-  // Debounce search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchQuery);
-      setPage(1);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
 
   // Sticky navbar detection
   useEffect(() => {

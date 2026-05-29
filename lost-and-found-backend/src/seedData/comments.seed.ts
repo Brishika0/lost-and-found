@@ -23,7 +23,8 @@ export const comments = [
     isPinned: false,
     isHidden: false,
     isActive: true,
-    createdAt: new Date("2024-02-15T10:30:00Z"),
+    createdAt: new Date("2024-02-16T10:30:00Z"),
+    updatedAt: new Date("2024-02-16T10:30:00Z"),
   },
   {
     _id: new Types.ObjectId("650000000000000000000302"),
@@ -51,48 +52,23 @@ export const comments = [
     isPinned: false,
     isHidden: false,
     isActive: true,
-    createdAt: new Date("2024-02-15T11:15:00Z"),
+    createdAt: new Date("2024-02-16T11:15:00Z"),
+    updatedAt: new Date("2024-02-16T11:15:00Z"),
   },
-
-  // Comments on AirPods
+  // Comments on Student ID Card
   {
     _id: new Types.ObjectId("650000000000000000000303"),
     content:
-      "I hope you find them! Check the lost and found box at the library entrance.",
-    userId: new Types.ObjectId("650000000000000000000023"),
-    itemId: new Types.ObjectId("650000000000000000000202"),
-    parentCommentId: null,
-    replyCount: 0,
-    mentions: [],
-    hashtags: [],
-    likes: [new Types.ObjectId("650000000000000000000022")],
-    likesCount: 1,
-    media: [],
-    isEdited: false,
-    editHistory: [],
-    isFlagged: false,
-    flagCount: 0,
-    flags: [],
-    isPinned: false,
-    isHidden: false,
-    isActive: true,
-    createdAt: new Date("2024-02-16T14:20:00Z"),
-  },
-
-  // Comments on Student ID Card
-  {
-    _id: new Types.ObjectId("650000000000000000000304"),
-    content:
-      "Hey @shristi.karki, I found your ID card! Please DM me to get it back. #found",
+      "Hey @bishal.thapa, I found your ID card! Please DM me to get it back. #found",
     userId: new Types.ObjectId("650000000000000000000023"),
     itemId: new Types.ObjectId("650000000000000000000203"),
     parentCommentId: null,
     replyCount: 1,
     mentions: [
       {
-        userId: new Types.ObjectId("650000000000000000000022"),
-        username: "shristi.karki",
-        indices: [4, 18],
+        userId: new Types.ObjectId("650000000000000000000021"),
+        username: "bishal.thapa",
+        indices: [4, 17],
       },
     ],
     hashtags: ["found"],
@@ -107,15 +83,16 @@ export const comments = [
     isPinned: true,
     isHidden: false,
     isActive: true,
-    createdAt: new Date("2024-02-17T09:45:00Z"),
+    createdAt: new Date("2024-02-26T09:45:00Z"),
+    updatedAt: new Date("2024-02-26T09:45:00Z"),
   },
   {
-    _id: new Types.ObjectId("650000000000000000000305"),
+    _id: new Types.ObjectId("650000000000000000000304"),
     content:
       "Thank you so much @aayush.gurung! I'll come pick it up during lunch.",
-    userId: new Types.ObjectId("650000000000000000000022"),
+    userId: new Types.ObjectId("650000000000000000000021"),
     itemId: new Types.ObjectId("650000000000000000000203"),
-    parentCommentId: new Types.ObjectId("650000000000000000000304"),
+    parentCommentId: new Types.ObjectId("650000000000000000000303"),
     replyCount: 0,
     mentions: [
       {
@@ -136,39 +113,17 @@ export const comments = [
     isPinned: false,
     isHidden: false,
     isActive: true,
-    createdAt: new Date("2024-02-17T10:30:00Z"),
+    createdAt: new Date("2024-02-26T10:30:00Z"),
+    updatedAt: new Date("2024-02-26T10:30:00Z"),
   },
-
-  // Comments on Backpack
+  // Comment on iPhone
   {
-    _id: new Types.ObjectId("650000000000000000000306"),
+    _id: new Types.ObjectId("650000000000000000000305"),
     content:
-      "That might be my friend's backpack! He lost a black North Face one yesterday. #help",
-    userId: new Types.ObjectId("650000000000000000000024"),
-    itemId: new Types.ObjectId("650000000000000000000205"),
+      "I saw someone picking up a phone like this yesterday! Hope you find it 🙏",
+    userId: new Types.ObjectId("650000000000000000000023"),
+    itemId: new Types.ObjectId("650000000000000000000202"),
     parentCommentId: null,
-    replyCount: 1,
-    mentions: [],
-    hashtags: ["help"],
-    likes: [],
-    likesCount: 0,
-    media: [],
-    isEdited: false,
-    editHistory: [],
-    isFlagged: false,
-    flagCount: 0,
-    flags: [],
-    isPinned: false,
-    isHidden: false,
-    isActive: true,
-    createdAt: new Date("2024-02-19T15:10:00Z"),
-  },
-  {
-    _id: new Types.ObjectId("650000000000000000000307"),
-    content: "Tell your friend to describe what's inside it to claim it.",
-    userId: new Types.ObjectId("650000000000000000000025"),
-    itemId: new Types.ObjectId("650000000000000000000205"),
-    parentCommentId: new Types.ObjectId("650000000000000000000306"),
     replyCount: 0,
     mentions: [],
     hashtags: [],
@@ -183,6 +138,7 @@ export const comments = [
     isPinned: false,
     isHidden: false,
     isActive: true,
-    createdAt: new Date("2024-02-19T16:05:00Z"),
+    createdAt: new Date("2024-02-21T14:20:00Z"),
+    updatedAt: new Date("2024-02-21T14:20:00Z"),
   },
 ];

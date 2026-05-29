@@ -2,8 +2,6 @@ import { useState } from "react";
 import {
   useToggleUserStatus,
   useDeleteUser,
-  useUpdateUser,
-  useCreateUser,
   useGetCollegeAdmins,
   useVerifyUserEmail,
   useResendVerification,
@@ -21,8 +19,6 @@ import { DataTable } from "../dataTables/dataTable";
 import { useGetColleges } from "@/hooks/useColleges";
 import type { College } from "@/types/college";
 import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
-import type { User } from "@/types/user.types";
 import { useDebounce } from "@/utils/debounce";
 
 export default function StudentsPage() {
@@ -69,7 +65,7 @@ export default function StudentsPage() {
     }
   };
 
-  const handleResendVerification = async (id: string, email: string) => {
+  const handleResendVerification = async (id: string) => {
     try {
       await resendVerification.mutateAsync(id);
     } catch (error) {

@@ -6,7 +6,7 @@ export function RegisterForm() {
 
   const handleRegister = async (values: any) => {
     try {
-      const result = await register.mutateAsync(values);
+      await register.mutateAsync(values);
     } catch (error: any) {
       console.error("Registration error:", error);
     }

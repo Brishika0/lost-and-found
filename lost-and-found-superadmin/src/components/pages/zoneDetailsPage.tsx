@@ -46,7 +46,6 @@ import {
   Trash2,
   Plus,
   X,
-  ArrowLeft,
   Calendar,
 } from "lucide-react";
 import { format } from "date-fns";

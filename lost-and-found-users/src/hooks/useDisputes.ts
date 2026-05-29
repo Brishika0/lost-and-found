@@ -107,16 +107,16 @@ export const useCreateDispute = () => {
 
   return useMutation({
     mutationFn: (data: CreateDisputeRequest) => disputesApi.createDispute(data),
-    onSuccess: (result, variables) => {
+    onSuccess: (variables) => {
       // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: disputeKeys.lists() });
       queryClient.invalidateQueries({ queryKey: disputeKeys.my() });
       queryClient.invalidateQueries({ queryKey: disputeKeys.statistics() });
 
       // Invalidate item-specific disputes
-      if (variables.itemId) {
+      if (variables.data.dispute.itemId) {
         queryClient.invalidateQueries({
-          queryKey: disputeKeys.byItem(variables.itemId),
+          queryKey: disputeKeys.byItem(variables.data.dispute.itemId._id),
         });
       }
 
@@ -137,10 +137,10 @@ export const useUpdateDisputeStatus = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateStatusRequest }) =>
       disputesApi.updateDisputeStatus(id, data),
-    onSuccess: (result, variables) => {
+    onSuccess: (variables) => {
       // Invalidate the specific dispute
       queryClient.invalidateQueries({
-        queryKey: disputeKeys.detail(variables.id),
+        queryKey: disputeKeys.detail(variables.data.dispute._id),
       });
 
       // Invalidate lists
@@ -165,10 +165,12 @@ export const useAddDisputeMessage = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: AddMessageRequest }) =>
       disputesApi.addDisputeMessage(id, data),
-    onSuccess: (result, variables) => {
+    onSuccess: (variables) => {
       // Invalidate the specific dispute to get updated messages
       queryClient.invalidateQueries({
-        queryKey: disputeKeys.detail(variables.id),
+        queryKey: disputeKeys.detail(
+          variables.data.messages[0]?.disputeId || "",
+        ),
       });
 
       toast.success("Message added successfully");
@@ -223,10 +225,10 @@ export const useEscalateDispute = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: EscalateDisputeRequest }) =>
       disputesApi.escalateDispute(id, data),
-    onSuccess: (result, variables) => {
+    onSuccess: (variables) => {
       // Invalidate the specific dispute
       queryClient.invalidateQueries({
-        queryKey: disputeKeys.detail(variables.id),
+        queryKey: disputeKeys.detail(variables.data.dispute._id),
       });
 
       // Invalidate lists
@@ -251,10 +253,10 @@ export const useAssignAdminToDispute = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: AssignAdminRequest }) =>
       disputesApi.assignAdminToDispute(id, data),
-    onSuccess: (result, variables) => {
+    onSuccess: (variables) => {
       // Invalidate the specific dispute
       queryClient.invalidateQueries({
-        queryKey: disputeKeys.detail(variables.id),
+        queryKey: disputeKeys.detail(variables.data.dispute._id),
       });
 
       // Invalidate lists
@@ -279,10 +281,12 @@ export const useAddDisputeEvidence = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: AddEvidenceRequest }) =>
       disputesApi.addDisputeEvidence(id, data),
-    onSuccess: (result, variables) => {
+    onSuccess: (variables) => {
       // Invalidate the specific dispute to get updated evidence
       queryClient.invalidateQueries({
-        queryKey: disputeKeys.detail(variables.id),
+        queryKey: disputeKeys.detail(
+          variables.data.evidence[0]?.disputeId || "",
+        ),
       });
 
       toast.success("Evidence added successfully");
@@ -301,10 +305,10 @@ export const useArchiveDispute = () => {
 
   return useMutation({
     mutationFn: (id: string) => disputesApi.archiveDispute(id),
-    onSuccess: (result, variables) => {
+    onSuccess: (variables) => {
       // Invalidate the specific dispute
       queryClient.invalidateQueries({
-        queryKey: disputeKeys.detail(variables),
+        queryKey: disputeKeys.detail(variables.data.disputeId),
       });
 
       // Invalidate lists and statistics

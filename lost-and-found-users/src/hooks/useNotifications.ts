@@ -97,7 +97,7 @@ export const useMarkAsRead = () => {
 
   return useMutation({
     mutationFn: (id: string) => notificationsApi.markAsRead(id),
-    onSuccess: (_, id) => {
+    onSuccess: () => {
       // Invalidate affected queries
       queryClient.invalidateQueries({ queryKey: notificationKeys.lists() });
       queryClient.invalidateQueries({

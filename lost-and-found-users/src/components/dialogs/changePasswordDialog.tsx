@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Lock, CheckCircle2 } from "lucide-react";
-import { toast } from "sonner";
 
 const changePasswordSchema = z
   .object({

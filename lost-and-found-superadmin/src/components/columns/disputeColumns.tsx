@@ -21,7 +21,6 @@ import {
   UserCheck,
   Calendar,
   FileText,
-  Shield,
 } from "lucide-react";
 import { format } from "date-fns";
 import type { Dispute } from "@/types/dispute.types";
@@ -85,10 +84,8 @@ const priorityConfig = {
 };
 
 export const disputeColumns = ({
-  onView,
   onAddMessage,
   onUpdateStatus,
-  onResolve,
   onEscalate,
   onAssignAdmin,
   onArchive,

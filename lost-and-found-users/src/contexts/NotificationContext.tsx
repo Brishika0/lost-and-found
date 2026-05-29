@@ -1,9 +1,12 @@
+"use client";
+
 import React, {
   createContext,
   useContext,
   useEffect,
   useCallback,
   useRef,
+  useState,
   type ReactNode,
 } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,18 +17,14 @@ import type {
 } from "@/types/notification.types";
 import { toast } from "sonner";
 
-//  Types
-
+// Types
 interface NotificationContextType {
-  // Data
   notifications: Notification[];
   unreadCount: number;
   totalCount: number;
   isLoading: boolean;
   isFetching: boolean;
   error: Error | null;
-
-  // Actions
   markAsRead: (id: string) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   markAsClicked: (id: string) => Promise<void>;
@@ -35,20 +34,15 @@ interface NotificationContextType {
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
-
-  // Filters
   filters: NotificationQueryParams;
   setFilters: (filters: NotificationQueryParams) => void;
-
-  // Real-time
   playSound: boolean;
   setPlaySound: (enabled: boolean) => void;
   showToast: boolean;
   setShowToast: (enabled: boolean) => void;
 }
 
-//  Query Keys
-
+// Query Keys
 const notificationKeys = {
   all: ["notifications"] as const,
   lists: () => [...notificationKeys.all, "list"] as const,
@@ -58,56 +52,115 @@ const notificationKeys = {
   stats: () => [...notificationKeys.all, "stats"] as const,
 };
 
-//  Context
-
+// Context
 const NotificationContext = createContext<NotificationContextType | undefined>(
   undefined,
 );
 
-//  Provider Props
-
+// Provider Props
 interface NotificationProviderProps {
   children: ReactNode;
-  pollingInterval?: number; // in milliseconds, default 30000 (30 seconds)
+  pollingInterval?: number;
   enableSound?: boolean;
   enableToast?: boolean;
 }
 
-//  Sound Effect (optional)
+// Storage key for localStorage
+const STORAGE_KEY = "toasted_notification_ids";
 
+// Helper function to get stored toasted IDs
+const getStoredToastedIds = (): Set<string> => {
+  if (typeof window === "undefined") return new Set();
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      return new Set(JSON.parse(stored));
+    } catch {
+      return new Set();
+    }
+  }
+  return new Set();
+};
+
+// Helper function to save toasted IDs to localStorage
+const saveToastedIds = (ids: Set<string>) => {
+  if (typeof window === "undefined") return;
+  const idsArray = Array.from(ids).slice(-100);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(idsArray));
+};
+
+// Helper function to get toast icon based on notification type
+const getToastIcon = (type: string): string => {
+  const iconMap: Record<string, string> = {
+    ORDER_PLACED: "🛒",
+    ORDER_CONFIRMED: "✅",
+    ORDER_PREPARING: "👨‍🍳",
+    ORDER_READY: "✅",
+    ORDER_SERVED: "🍽️",
+    ORDER_COMPLETED: "🎉",
+    ORDER_CANCELLED: "❌",
+    PAYMENT_RECEIVED: "💰",
+    PAYMENT_FAILED: "⚠️",
+    RESERVATION_CONFIRMED: "📅",
+    RESERVATION_CANCELLED: "❌",
+    LOYALTY_POINTS_EARNED: "⭐",
+    LOYALTY_POINTS_REDEEMED: "🎁",
+    GENERAL_ANNOUNCEMENT: "📢",
+    KITCHEN_ORDER: "👨‍🍳",
+    BAR_ORDER: "🍺",
+    TABLE_STATUS_UPDATE: "🪑",
+    STAFF_ASSIGNMENT: "👥",
+  };
+  return iconMap[type] || "🔔";
+};
+
+// Helper function to show toast for a single notification
+const showNotificationToast = (
+  title: string,
+  message: string,
+  type: string,
+) => {
+  const icon = getToastIcon(type);
+
+  toast.info(title, {
+    description: message,
+    duration: 5000,
+    icon: icon,
+  });
+};
+
+// Sound Effect
 const playNotificationSound = () => {
-  const audio = new Audio("/notification.mp3"); // Add your sound file to public folder
+  const audio = new Audio("/notification.mp3");
   audio.volume = 0.3;
   audio.play().catch(() => {
-    // Auto-play might be blocked by browser
     console.log("Notification sound could not be played");
   });
 };
 
-//  Provider Component
-
+// Provider Component
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   children,
-  pollingInterval = 30000,
+  pollingInterval = 5000, // Changed to 5 seconds
   enableSound = true,
   enableToast = true,
 }) => {
   const queryClient = useQueryClient();
-  const previousUnreadCount = useRef<number>(0);
-  const [filters, setFilters] = React.useState<NotificationQueryParams>({
+  const [toastedNotificationIds, setToastedNotificationIds] = useState<
+    Set<string>
+  >(() => getStoredToastedIds());
+  const [filters, setFilters] = useState<NotificationQueryParams>({
     page: 1,
-    limit: 20,
+    limit: 50,
   });
-  const [playSound, setPlaySound] = React.useState(enableSound);
-  const [showToast, setShowToast] = React.useState(enableToast);
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [allNotifications, setAllNotifications] = React.useState<
-    Notification[]
-  >([]);
+  const [playSound, setPlaySound] = useState(enableSound);
+  const [showToast, setShowToast] = useState(enableToast);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  //  Queries
+  // Use ref to track previous notifications for comparison
+  const previousNotificationIdsRef = useRef<Set<string>>(new Set());
 
-  // Get notifications with filters
+  // Queries
   const {
     data: notificationsData,
     isLoading,
@@ -117,25 +170,22 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   } = useQuery({
     queryKey: notificationKeys.list(filters),
     queryFn: () => notificationsApi.getNotifications(filters),
-    staleTime: 30 * 1000, // 30 seconds
-    gcTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 30 * 1000,
+    gcTime: 5 * 60 * 1000,
+    refetchInterval: pollingInterval, // Auto-refetch every 5 seconds
   });
 
-  // Get unread count
   const { data: unreadCountData, refetch: refetchUnreadCount } = useQuery({
     queryKey: notificationKeys.unreadCount(),
     queryFn: () => notificationsApi.getUnreadCount(),
-    staleTime: 10 * 1000, // 10 seconds
+    staleTime: 10 * 1000,
     refetchInterval: pollingInterval,
   });
 
-  //  Mutations
-
-  // Mark single notification as read
+  // Mutations
   const markAsReadMutation = useMutation({
     mutationFn: (id: string) => notificationsApi.markAsRead(id),
     onSuccess: (_, id) => {
-      // Update cache
       queryClient.setQueryData(
         notificationKeys.list(filters),
         (oldData: any) => {
@@ -155,16 +205,19 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
           };
         },
       );
-      // Refetch unread count
       refetchUnreadCount();
+      // Remove from toasted set when marked as read
+      setToastedNotificationIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
     },
   });
 
-  // Mark all as read
   const markAllAsReadMutation = useMutation({
     mutationFn: () => notificationsApi.markAllAsRead(),
     onSuccess: () => {
-      // Update cache
       queryClient.setQueryData(
         notificationKeys.list(filters),
         (oldData: any) => {
@@ -186,20 +239,20 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
         },
       );
       refetchUnreadCount();
-      toast.success("All notifications marked as read");
+      setToastedNotificationIds(new Set());
+      if (showToast) {
+        toast.success("All notifications marked as read");
+      }
     },
   });
 
-  // Mark as clicked
   const markAsClickedMutation = useMutation({
     mutationFn: (id: string) => notificationsApi.markAsClicked(id),
   });
 
-  // Delete notification
   const deleteNotificationMutation = useMutation({
     mutationFn: (id: string) => notificationsApi.deleteNotification(id),
     onSuccess: (_, id) => {
-      // Update cache
       queryClient.setQueryData(
         notificationKeys.list(filters),
         (oldData: any) => {
@@ -223,15 +276,20 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
         },
       );
       refetchUnreadCount();
-      toast.success("Notification deleted");
+      setToastedNotificationIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+      if (showToast) {
+        toast.success("Notification deleted");
+      }
     },
   });
 
-  // Delete all read notifications
   const deleteAllReadMutation = useMutation({
     mutationFn: () => notificationsApi.deleteAllReadNotifications(),
     onSuccess: () => {
-      // Update cache
       queryClient.setQueryData(
         notificationKeys.list(filters),
         (oldData: any) => {
@@ -247,55 +305,72 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
           };
         },
       );
-      toast.success("Read notifications cleared");
+      if (showToast) {
+        toast.success("Read notifications cleared");
+      }
     },
   });
 
-  //  Handle New Notifications
-
+  // Handle New Notifications - Show individual toast for each new notification
   useEffect(() => {
-    const currentUnreadCount = unreadCountData?.data?.unreadCount || 0;
+    const currentNotifications = notificationsData?.data?.notifications || [];
+    const currentNotificationIds = new Set(
+      currentNotifications.map((n) => n._id),
+    );
 
-    // Check for new notifications
-    if (currentUnreadCount > previousUnreadCount.current) {
-      const newCount = currentUnreadCount - previousUnreadCount.current;
+    // Find new notification IDs (those not in previous ref)
+    const newNotificationIds = new Set<string>();
+    currentNotificationIds.forEach((id) => {
+      if (!previousNotificationIdsRef.current.has(id)) {
+        newNotificationIds.add(id);
+      }
+    });
 
-      // Show toast for new notifications
-      if (showToast && newCount > 0) {
-        toast.success(
-          `📬 ${newCount} new notification${newCount > 1 ? "s" : ""}`,
-          {
-            duration: 5000,
-            action: {
-              label: "View",
-              onClick: () => {
-                // Navigate to notifications page or open dropdown
-                window.location.href = "/notifications";
-              },
-            },
-          },
+    // Find new notifications that haven't been toasted yet
+    const newNotifications = currentNotifications.filter(
+      (notification: Notification) =>
+        newNotificationIds.has(notification._id) &&
+        !toastedNotificationIds.has(notification._id),
+    );
+
+    // Show toast for each new notification (even on page load)
+    if (showToast && newNotifications.length > 0) {
+      newNotifications.forEach((notification: Notification) => {
+        // Add to toasted set to prevent duplicate toasts
+        setToastedNotificationIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.add(notification._id);
+          return newSet;
+        });
+
+        showNotificationToast(
+          notification.title,
+          notification.message,
+          notification.type,
         );
-      }
-
-      // Play sound for new notifications
-      if (playSound && newCount > 0) {
-        playNotificationSound();
-      }
-
-      // Refetch notifications to show new ones
-      refetchNotifications();
+      });
     }
 
-    previousUnreadCount.current = currentUnreadCount;
+    // Play sound for new notifications
+    if (playSound && newNotifications.length > 0) {
+      playNotificationSound();
+    }
+
+    // Update previous IDs ref
+    previousNotificationIdsRef.current = currentNotificationIds;
   }, [
-    unreadCountData?.data?.unreadCount,
+    notificationsData?.data?.notifications,
     showToast,
     playSound,
-    refetchNotifications,
+    toastedNotificationIds,
   ]);
 
-  //  Auto-refresh on focus
+  // Save toasted IDs to localStorage whenever they change
+  useEffect(() => {
+    saveToastedIds(toastedNotificationIds);
+  }, [toastedNotificationIds]);
 
+  // Auto-refresh on focus
   useEffect(() => {
     const handleFocus = () => {
       refetchUnreadCount();
@@ -306,8 +381,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     return () => window.removeEventListener("focus", handleFocus);
   }, [refetchUnreadCount, refetchNotifications]);
 
-  //  Pagination
-
+  // Pagination
   const notifications = notificationsData?.data?.notifications || [];
   const unreadCount = unreadCountData?.data?.unreadCount || 0;
   const totalCount = notificationsData?.data?.pagination?.total || 0;
@@ -325,8 +399,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     }
   }, [hasNextPage, isFetching, notificationsData]);
 
-  //  Actions
-
+  // Actions
   const markAsRead = useCallback(
     async (id: string) => {
       await markAsReadMutation.mutateAsync(id);
@@ -356,8 +429,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     await deleteAllReadMutation.mutateAsync();
   }, [deleteAllReadMutation]);
 
-  //  Context Value
-
+  // Context Value
   const value: NotificationContextType = {
     notifications,
     unreadCount,
@@ -389,8 +461,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   );
 };
 
-//  Hook
-
+// Hook
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (context === undefined) {

@@ -496,7 +496,7 @@ export const CommentsSection: React.FC<CommentsSectionProps> = ({
 
       {displayedComments.length > 0 ? (
         <div className="space-y-4">
-          {displayedComments.map((comment, index) => (
+          {displayedComments.map((comment) => (
             <CommentItem
               key={comment._id}
               comment={comment}

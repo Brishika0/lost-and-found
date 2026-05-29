@@ -8,7 +8,7 @@ export function LoginForm() {
 
   const handleLogin = async (values: any) => {
     try {
-      const result = await login(values);
+      await login(values);
       navigate("/");
     } catch (error: any) {
       console.log(error);

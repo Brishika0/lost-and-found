@@ -25,6 +25,9 @@ import UserDisputeDetailsPage from "./components/pages/UserDisputeDetailsPage";
 import UserLayout from "./components/layouts/userLayout";
 import NotificationsPage from "./components/pages/NotificationsPage";
 import MyItemsPage from "./components/pages/MyItemsPage";
+import RewardHistory from "./components/pages/rewardHistory";
+import CouponsPage from "./components/pages/admin/couponsPage";
+import UserCouponsPage from "./components/pages/UserCouponsPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -128,6 +131,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/coupons"
+          element={
+            <ProtectedRoute>
+              <CouponsPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       <Route element={<UserLayout />}>
@@ -157,6 +168,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/edit-post/:id"
           element={
@@ -208,6 +220,24 @@ const App = () => {
           element={
             <ProtectedRoute>
               <MyItemsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-rewards"
+          element={
+            <ProtectedRoute>
+              <RewardHistory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/coupons"
+          element={
+            <ProtectedRoute>
+              <UserCouponsPage />
             </ProtectedRoute>
           }
         />

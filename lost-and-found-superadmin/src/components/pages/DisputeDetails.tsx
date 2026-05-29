@@ -54,13 +54,11 @@ import {
   Tag,
   Info,
   ArrowLeft,
-  MoreVertical,
   UserCheck,
   Paperclip,
   X,
   Loader2,
   Send,
-  Plus,
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";

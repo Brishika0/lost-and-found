@@ -117,7 +117,7 @@ export function LostItemForm({ initialData }: LostItemFormProps) {
   const status = watch("status");
   const zoneId = watch("zoneId");
 
-  const { data: zonesList, isLoading: zonesLoading } = useGetZones({
+  const { data: zonesList } = useGetZones({
     limit: 20,
     isActive: true,
   });

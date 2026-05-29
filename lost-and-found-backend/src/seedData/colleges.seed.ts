@@ -2,42 +2,16 @@ import { Types } from "mongoose";
 
 export const colleges = [
   {
-    _id: new Types.ObjectId("650000000000000000000111"),
-    name: "Demo College",
-    domain: "gmail.com",
-    logo: {
-      url: "https://res.cloudinary.com/demo/image/upload/v1/colleges/herald/logo.png",
-      publicId: "colleges/herald/logo",
-      uploadedAt: new Date("2024-01-01"),
-    },
-    shortName: "Demo",
-    adminIds: [], // Will be updated after users are created
-    location: {
-      address: "Naxal, Kathmandu",
-      city: "Kathmandu",
-      state: "Bagmati",
-      country: "Nepal",
-      coordinates: [85.324, 27.717],
-    },
-    contactInfo: {
-      email: "info@democlz.edu.np",
-      phone: "+977-1-4412345",
-      website: "https://democollege.edu.np",
-    },
-    isActive: true,
-    createdBy: new Types.ObjectId("650000000000000000000000"), // Superadmin
-  },
-  {
     _id: new Types.ObjectId("650000000000000000000001"),
     name: "Herald College Kathmandu",
     domain: "heraldcollege.edu.np",
     logo: {
-      url: "https://res.cloudinary.com/demo/image/upload/v1/colleges/herald/logo.png",
+      url: "https://images.unsplash.com/photo-1562774053-701939374585?w=200&h=200&fit=crop",
       publicId: "colleges/herald/logo",
       uploadedAt: new Date("2024-01-01"),
     },
     shortName: "Herald",
-    adminIds: [], // Will be updated after users are created
+    adminIds: [],
     location: {
       address: "Naxal, Kathmandu",
       city: "Kathmandu",
@@ -51,14 +25,16 @@ export const colleges = [
       website: "https://heraldcollege.edu.np",
     },
     isActive: true,
-    createdBy: new Types.ObjectId("650000000000000000000000"), // Superadmin
+    createdBy: new Types.ObjectId("000000000000000000000000"),
+    createdAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
   },
   {
     _id: new Types.ObjectId("650000000000000000000002"),
     name: "Islington College",
     domain: "islington.edu.np",
     logo: {
-      url: "https://res.cloudinary.com/demo/image/upload/v1/colleges/islington/logo.png",
+      url: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=200&h=200&fit=crop",
       publicId: "colleges/islington/logo",
       uploadedAt: new Date("2024-01-01"),
     },
@@ -77,40 +53,16 @@ export const colleges = [
       website: "https://islington.edu.np",
     },
     isActive: true,
-    createdBy: new Types.ObjectId("650000000000000000000000"),
+    createdBy: new Types.ObjectId("000000000000000000000000"),
+    createdAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
   },
   {
     _id: new Types.ObjectId("650000000000000000000003"),
-    name: "Itahari International College",
-    domain: "iic.edu.np",
-    logo: {
-      url: "https://res.cloudinary.com/demo/image/upload/v1/colleges/iic/logo.png",
-      publicId: "colleges/iic/logo",
-      uploadedAt: new Date("2024-01-01"),
-    },
-    shortName: "IIC",
-    adminIds: [],
-    location: {
-      address: "Itahari, Sunsari",
-      city: "Itahari",
-      state: "Koshi",
-      country: "Nepal",
-      coordinates: [87.274, 26.663],
-    },
-    contactInfo: {
-      email: "info@iic.edu.np",
-      phone: "+977-25-581234",
-      website: "https://iic.edu.np",
-    },
-    isActive: true,
-    createdBy: new Types.ObjectId("650000000000000000000000"),
-  },
-  {
-    _id: new Types.ObjectId("650000000000000000000004"),
     name: "Softwarica College",
     domain: "softwarica.edu.np",
     logo: {
-      url: "https://res.cloudinary.com/demo/image/upload/v1/colleges/softwarica/logo.png",
+      url: "https://images.unsplash.com/photo-1562774053-701939374585?w=200&h=200&fit=crop",
       publicId: "colleges/softwarica/logo",
       uploadedAt: new Date("2024-01-01"),
     },
@@ -129,32 +81,8 @@ export const colleges = [
       website: "https://softwarica.edu.np",
     },
     isActive: true,
-    createdBy: new Types.ObjectId("650000000000000000000000"),
-  },
-  {
-    _id: new Types.ObjectId("650000000000000000000005"),
-    name: "Kathmandu University School of Management",
-    domain: "kusom.edu.np",
-    logo: {
-      url: "https://res.cloudinary.com/demo/image/upload/v1/colleges/kusom/logo.png",
-      publicId: "colleges/kusom/logo",
-      uploadedAt: new Date("2024-01-01"),
-    },
-    shortName: "KUSOM",
-    adminIds: [],
-    location: {
-      address: "Balkumari, Lalitpur",
-      city: "Lalitpur",
-      state: "Bagmati",
-      country: "Nepal",
-      coordinates: [85.322, 27.672],
-    },
-    contactInfo: {
-      email: "info@kusom.edu.np",
-      phone: "+977-1-5212345",
-      website: "https://kusom.edu.np",
-    },
-    isActive: true,
-    createdBy: new Types.ObjectId("650000000000000000000000"),
+    createdBy: new Types.ObjectId("000000000000000000000000"),
+    createdAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
   },
 ];

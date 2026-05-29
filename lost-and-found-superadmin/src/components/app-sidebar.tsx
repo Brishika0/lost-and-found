@@ -13,7 +13,6 @@ import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Building2,
-  Users,
   GraduationCap,
   FileText,
   Settings,
@@ -22,6 +21,8 @@ import {
   UserCog,
   User,
   Building,
+  Scale,
+  Ticket,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
@@ -62,6 +63,16 @@ const managementItems = [
     title: "Posts",
     path: "/posts",
     icon: FileText,
+  },
+  {
+    title: "Disputes",
+    path: "/disputes",
+    icon: Scale,
+  },
+  {
+    title: "Coupons",
+    path: "/coupons",
+    icon: Ticket,
   },
 ];
 

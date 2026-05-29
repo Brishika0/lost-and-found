@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { Edit, Trash2, Loader2 } from "lucide-react";
+import { Edit, Loader2 } from "lucide-react";
 
 // Shadcn imports
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Import your existing hooks
-import { useGetCollegeById } from "@/hooks/useColleges"; // Adjust path as needed
+import { useDeleteCollege, useGetCollegeById } from "@/hooks/useColleges"; // Adjust path as needed
 
 // Import tab components
 import { OverviewTab } from "./collegeTabs/OverviewTab";
@@ -18,10 +18,12 @@ import { AdminsTab } from "./collegeTabs/AdminsTab";
 import { ZonesTab } from "./collegeTabs/ZonesTab";
 import { StatisticsTab } from "./collegeTabs/StatisticsTab";
 import { ActivityTab } from "./collegeTabs/ActivityTab";
+import { DeleteConfirmation } from "@/components/dialogs/deleteConfirmationDialog";
 
 const CollegeDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [activeTab, setActiveTab] = useState("overview");
+
+  const deleteCollege = useDeleteCollege();
 
   // Only fetch basic college data here - tabs will fetch their own data
   const {
@@ -93,20 +95,19 @@ const CollegeDetailsPage: React.FC = () => {
               <Edit className="mr-2 h-4 w-4" />
               Edit
             </Button>
-            <Button variant="destructive" size="sm">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </Button>
+
+            <DeleteConfirmation
+              title="Are you sure?"
+              description="This action cannot be undone. This will permanently delete the User and all associated data."
+              onConfirm={() => deleteCollege.mutateAsync(college._id)}
+              defaultBtn
+            />
           </div>
         </div>
       </div>
 
       {/* Tabs Section */}
-      <Tabs
-        defaultValue="overview"
-        className="space-y-6"
-        onValueChange={setActiveTab}
-      >
+      <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-5 lg:w-[600px]">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="admins">

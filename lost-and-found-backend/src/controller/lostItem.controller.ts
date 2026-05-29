@@ -10,6 +10,7 @@ import { AuthRequest } from "../types/middlewareTypes";
 import Zone from "../models/campusZone.modal";
 import LostItem from "../models/lostItem.modal";
 import User from "../models/user.model";
+import { RewardTransaction } from "../models/reward.model";
 
 // CREATE
 export const createLostItem = async (
@@ -791,14 +792,416 @@ export const updateLostItem = async (
   }
 };
 
+// export const updateLostItemStatus = async (
+//   req: AuthRequest,
+//   res: Response,
+// ): Promise<void> => {
+//   try {
+//     const { id } = req.params;
+//     const { status, foundBy, claimedBy, returnedTo } = req.body;
+
+//     if (!mongoose.Types.ObjectId.isValid(id as any)) {
+//       res.status(400).json({
+//         success: false,
+//         message: "Invalid item ID",
+//       });
+//       return;
+//     }
+
+//     if (!req.user?._id || !req.user?.collegeId) {
+//       res.status(401).json({
+//         success: false,
+//         message: "User not authenticated",
+//       });
+//       return;
+//     }
+
+//     if (!["lost", "found", "claimed", "returned"].includes(status)) {
+//       res.status(400).json({
+//         success: false,
+//         message: "Invalid status value",
+//       });
+//       return;
+//     }
+
+//     const lostItem = await LostItem.findById(id);
+
+//     if (!lostItem) {
+//       res.status(404).json({
+//         success: false,
+//         message: "Lost item not found",
+//       });
+//       return;
+//     }
+
+//     // Check if item belongs to user's college
+//     if (lostItem.collegeId.toString() !== req.user.collegeId.toString()) {
+//       res.status(403).json({
+//         success: false,
+//         message: "You cannot update items from other colleges",
+//       });
+//       return;
+//     }
+
+//     // Check ownership or admin role
+//     const isOwner = lostItem.reportedBy.toString() === req.user._id;
+//     const isCollegeAdmin = req.user.role === "college_admin";
+//     const isSuperAdmin = req.user.role === "super_admin";
+
+//     if (!isOwner && !isCollegeAdmin && !isSuperAdmin) {
+//       res.status(403).json({
+//         success: false,
+//         message: "You are not authorized to update this item",
+//       });
+//       return;
+//     }
+
+//     // Prepare update object
+//     const update: any = {
+//       status,
+//       updatedBy: new mongoose.Types.ObjectId(req.user._id),
+//     };
+
+//     // Set appropriate date fields and user references
+//     switch (status) {
+//       case "found":
+//         update.dateFound = new Date();
+//         if (foundBy) {
+//           // Verify foundBy user belongs to same college
+//           const user = await User.findById(foundBy);
+//           if (
+//             user &&
+//             user.collegeId?.toString() === req.user.collegeId.toString()
+//           ) {
+//             update.foundBy = new mongoose.Types.ObjectId(foundBy);
+//           }
+//         }
+//         break;
+//       case "claimed":
+//         update.dateClaimed = new Date();
+//         if (claimedBy) {
+//           const user = await User.findById(claimedBy);
+//           if (
+//             user &&
+//             user.collegeId?.toString() === req.user.collegeId.toString()
+//           ) {
+//             update.claimedBy = new mongoose.Types.ObjectId(claimedBy);
+//           }
+//         }
+//         break;
+//       case "returned":
+//         update.dateReturned = new Date();
+//         if (returnedTo) {
+//           const user = await User.findById(returnedTo);
+//           if (
+//             user &&
+//             user.collegeId?.toString() === req.user.collegeId.toString()
+//           ) {
+//             update.returnedTo = new mongoose.Types.ObjectId(returnedTo);
+//           }
+//         }
+//         break;
+//     }
+
+//     const updatedItem = await LostItem.findByIdAndUpdate(id, update, {
+//       new: true,
+//     })
+//       .populate("reportedBy", "name email avatar")
+//       .populate("foundBy", "name email avatar")
+//       .populate("claimedBy", "name email avatar")
+//       .populate("returnedTo", "name email avatar");
+
+//     res.status(200).json({
+//       success: true,
+//       message: `Item status updated to ${status}`,
+//       data: updatedItem,
+//     });
+//   } catch (error: any) {
+//     console.error("Update status error:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || "Error updating item status",
+//     });
+//   }
+// };
+
+// export const updateLostItemStatus = async (
+//   req: AuthRequest,
+//   res: Response,
+// ): Promise<void> => {
+//   try {
+//     const { id } = req.params;
+//     const { status, foundBy, claimedBy, returnedTo } = req.body;
+
+//     if (!mongoose.Types.ObjectId.isValid(id as any)) {
+//       res.status(400).json({
+//         success: false,
+//         message: "Invalid item ID",
+//       });
+//       return;
+//     }
+
+//     if (!req.user?._id) {
+//       res.status(401).json({
+//         success: false,
+//         message: "User not authenticated",
+//       });
+//       return;
+//     }
+
+//     if (!["lost", "found", "claimed", "returned"].includes(status)) {
+//       res.status(400).json({
+//         success: false,
+//         message: "Invalid status value",
+//       });
+//       return;
+//     }
+
+//     const lostItem = await LostItem.findById(id)
+//       .populate("reportedBy", "_id name email")
+//       .populate("foundBy", "_id name email");
+
+//     if (!lostItem) {
+//       res.status(404).json({
+//         success: false,
+//         message: "Lost item not found",
+//       });
+//       return;
+//     }
+
+//     // Check ownership or admin role
+//     if (
+//       lostItem.reportedBy._id.toString() !== req.user._id &&
+//       req.user?.role !== "college_admin" &&
+//       req.user?.role !== "super_admin"
+//     ) {
+//       res.status(403).json({
+//         success: false,
+//         message: "You are not authorized to update this item",
+//       });
+//       return;
+//     }
+
+//     // Prepare update object
+//     const update: any = {
+//       status,
+//       updatedBy: new mongoose.Types.ObjectId(req.user._id),
+//     };
+
+//     // REWARD POINTS LOGIC
+//     const {
+//       addPointsForItemReturn,
+//       addPointsForItemFound,
+//       addPointsForItemClaimed,
+//     } = require("../services/reward.service");
+//     const Notification = mongoose.model("Notification");
+
+//     let rewardRecipientId = null;
+//     let rewardAmount = 0;
+//     let rewardMessage = "";
+
+//     switch (status) {
+//       case "found":
+//         update.dateFound = new Date();
+//         if (foundBy) {
+//           const user = await User.findById(foundBy);
+//           if (
+//             user &&
+//             user.collegeId?.toString() === lostItem.collegeId.toString()
+//           ) {
+//             update.foundBy = new mongoose.Types.ObjectId(foundBy);
+
+//             // Give points to the person who found the item
+//             const reward = await addPointsForItemFound(
+//               foundBy,
+//               id,
+//               lostItem.itemName,
+//             );
+//             rewardRecipientId = foundBy;
+//             rewardAmount = reward.points;
+//             rewardMessage = `You received ${reward.points} points for finding "${lostItem.itemName}"!`;
+
+//             // Create notification for finder
+//             await Notification.create({
+//               userId: foundBy,
+//               type: "reward_earned",
+//               title: "🎉 You Earned Points!",
+//               message: rewardMessage,
+//               priority: "medium",
+//               data: {
+//                 itemId: id,
+//                 itemName: lostItem.itemName,
+//                 points: reward.points,
+//                 action: "found",
+//               },
+//             });
+//           }
+//         }
+//         break;
+
+//       case "claimed":
+//         update.dateClaimed = new Date();
+//         if (claimedBy) {
+//           const user = await User.findById(claimedBy);
+//           if (
+//             user &&
+//             user.collegeId?.toString() === lostItem.collegeId.toString()
+//           ) {
+//             update.claimedBy = new mongoose.Types.ObjectId(claimedBy);
+
+//             // Give points to the owner who claimed their item
+//             const reward = await addPointsForItemClaimed(
+//               claimedBy,
+//               id,
+//               lostItem.itemName,
+//             );
+//             rewardRecipientId = claimedBy;
+//             rewardAmount = reward.points;
+//             rewardMessage = `You received ${reward.points} points for claiming your "${lostItem.itemName}"!`;
+
+//             // Create notification for claimant (owner)
+//             await Notification.create({
+//               userId: claimedBy,
+//               type: "reward_earned",
+//               title: "🎉 You Earned Points!",
+//               message: rewardMessage,
+//               priority: "medium",
+//               data: {
+//                 itemId: id,
+//                 itemName: lostItem.itemName,
+//                 points: reward.points,
+//                 action: "claimed",
+//               },
+//             });
+//           }
+//         }
+//         break;
+
+//       case "returned":
+//         update.dateReturned = new Date();
+//         if (returnedTo) {
+//           const user = await User.findById(returnedTo);
+//           if (
+//             user &&
+//             user.collegeId?.toString() === lostItem.collegeId.toString()
+//           ) {
+//             update.returnedTo = new mongoose.Types.ObjectId(returnedTo);
+//           }
+//         }
+
+//         // Determine who gets the reward for returning
+//         // If the item was originally LOST: the finder gets the reward for returning
+//         // If the item was originally FOUND: the original poster (reportedBy) gets the reward
+//         if (lostItem.status === "lost") {
+//           // Item was lost, finder returns it - reward goes to finder
+//           if (lostItem.foundBy) {
+//             const reward = await addPointsForItemReturn(
+//               lostItem.foundBy.toString(),
+//               id,
+//               lostItem.itemName,
+//             );
+//             rewardRecipientId = lostItem.foundBy.toString();
+//             rewardAmount = reward.points;
+//             rewardMessage = `You received ${reward.points} points for returning "${lostItem.itemName}" to its owner!`;
+
+//             // Create notification for finder
+//             await Notification.create({
+//               userId: lostItem.foundBy.toString(),
+//               type: "reward_earned",
+//               title: "🎉 You Earned Points!",
+//               message: rewardMessage,
+//               priority: "high",
+//               data: {
+//                 itemId: id,
+//                 itemName: lostItem.itemName,
+//                 points: reward.points,
+//                 action: "returned_as_finder",
+//               },
+//             });
+//           }
+//         } else {
+//           // Item was found, original poster returns it - reward goes to poster
+//           const reward = await addPointsForItemReturn(
+//             lostItem.reportedBy._id.toString(),
+//             id,
+//             lostItem.itemName,
+//           );
+//           rewardRecipientId = lostItem.reportedBy._id.toString();
+//           rewardAmount = reward.points;
+//           rewardMessage = `You received ${reward.points} points for returning "${lostItem.itemName}" to its rightful owner!`;
+
+//           // Create notification for original poster
+//           await Notification.create({
+//             userId: lostItem.reportedBy._id.toString(),
+//             type: "reward_earned",
+//             title: "🎉 You Earned Points!",
+//             message: rewardMessage,
+//             priority: "high",
+//             data: {
+//               itemId: id,
+//               itemName: lostItem.itemName,
+//               points: reward.points,
+//               action: "returned_as_poster",
+//             },
+//           });
+//         }
+//         break;
+//     }
+
+//     // Also notify the other party about the status update
+//     if (status === "returned") {
+//       // Notify the other party (the one who didn't get the reward)
+//       const otherPartyId =
+//         rewardRecipientId === lostItem.reportedBy._id.toString()
+//           ? lostItem.foundBy?._id?.toString()
+//           : lostItem.reportedBy._id.toString();
+
+//       if (otherPartyId) {
+//         await Notification.create({
+//           userId: otherPartyId,
+//           type: "item_returned",
+//           title: "Item Successfully Returned",
+//           message: `"${lostItem.itemName}" has been successfully returned to its owner. Thank you for your help!`,
+//           priority: "high",
+//           data: {
+//             itemId: id,
+//             itemName: lostItem.itemName,
+//           },
+//         });
+//       }
+//     }
+
+//     const updatedItem = await LostItem.findByIdAndUpdate(id, update, {
+//       new: true,
+//     })
+//       .populate("reportedBy", "name email avatar")
+//       .populate("foundBy", "name email avatar")
+//       .populate("claimedBy", "name email avatar")
+//       .populate("returnedTo", "name email avatar");
+
+//     res.status(200).json({
+//       success: true,
+//       message: `Item status updated to ${status}`,
+//       data: updatedItem,
+//     });
+//   } catch (error: any) {
+//     console.error("Update status error:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || "Error updating item status",
+//     });
+//   }
+// };
+
 export const updateLostItemStatus = async (
   req: AuthRequest,
   res: Response,
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const { status, foundBy, claimedBy, returnedTo } = req.body;
+    const { status, foundBy, claimedBy, returnedTo, rewardedTo } = req.body;
 
+    // Validate ID
     if (!mongoose.Types.ObjectId.isValid(id as any)) {
       res.status(400).json({
         success: false,
@@ -807,7 +1210,8 @@ export const updateLostItemStatus = async (
       return;
     }
 
-    if (!req.user?._id || !req.user?.collegeId) {
+    // Check authentication
+    if (!req.user?._id) {
       res.status(401).json({
         success: false,
         message: "User not authenticated",
@@ -815,6 +1219,7 @@ export const updateLostItemStatus = async (
       return;
     }
 
+    // Validate status
     if (!["lost", "found", "claimed", "returned"].includes(status)) {
       res.status(400).json({
         success: false,
@@ -823,7 +1228,10 @@ export const updateLostItemStatus = async (
       return;
     }
 
-    const lostItem = await LostItem.findById(id);
+    // Find the item with all necessary populations
+    const lostItem = await LostItem.findById(id)
+      .populate("reportedBy", "_id name email")
+      .populate("foundBy", "_id name email");
 
     if (!lostItem) {
       res.status(404).json({
@@ -833,24 +1241,50 @@ export const updateLostItemStatus = async (
       return;
     }
 
-    // Check if item belongs to user's college
-    if (lostItem.collegeId.toString() !== req.user.collegeId.toString()) {
+    // Check authorization (owner or admin)
+    const isOwner = lostItem.reportedBy._id.toString() === req.user._id;
+    const isAdmin =
+      req.user?.role === "college_admin" || req.user?.role === "super_admin";
+
+    if (!isOwner && !isAdmin) {
       res.status(403).json({
         success: false,
-        message: "You cannot update items from other colleges",
+        message: "You are not authorized to update this item",
       });
       return;
     }
 
-    // Check ownership or admin role
-    const isOwner = lostItem.reportedBy.toString() === req.user._id;
-    const isCollegeAdmin = req.user.role === "college_admin";
-    const isSuperAdmin = req.user.role === "super_admin";
-
-    if (!isOwner && !isCollegeAdmin && !isSuperAdmin) {
-      res.status(403).json({
+    // Prevent duplicate status updates
+    if (lostItem.status === status) {
+      res.status(400).json({
         success: false,
-        message: "You are not authorized to update this item",
+        message: `Item is already marked as ${status}`,
+      });
+      return;
+    }
+
+    // Validate status transition rules
+    if (lostItem.status === "lost" && status !== "returned") {
+      res.status(400).json({
+        success: false,
+        message: "Lost items can only be marked as returned",
+      });
+      return;
+    }
+
+    if (lostItem.status === "found" && status !== "claimed") {
+      res.status(400).json({
+        success: false,
+        message: "Found items can only be marked as claimed",
+      });
+      return;
+    }
+
+    if (lostItem.status === "claimed" || lostItem.status === "returned") {
+      res.status(400).json({
+        success: false,
+        message:
+          "This item has already been resolved and cannot be updated further",
       });
       return;
     }
@@ -861,47 +1295,171 @@ export const updateLostItemStatus = async (
       updatedBy: new mongoose.Types.ObjectId(req.user._id),
     };
 
-    // Set appropriate date fields and user references
+    // ==================== REWARD POINTS & NOTIFICATIONS ====================
+    const {
+      addPointsForItemReturn,
+      addPointsForItemClaimed,
+    } = require("../services/reward.service");
+    const Notification = mongoose.model("Notification");
+
+    let pointsAwarded = false;
+    let rewardAmount = 0;
+    let rewardRecipientId = null;
+
     switch (status) {
-      case "found":
-        update.dateFound = new Date();
-        if (foundBy) {
-          // Verify foundBy user belongs to same college
-          const user = await User.findById(foundBy);
-          if (
-            user &&
-            user.collegeId?.toString() === req.user.collegeId.toString()
-          ) {
-            update.foundBy = new mongoose.Types.ObjectId(foundBy);
-          }
-        }
-        break;
-      case "claimed":
-        update.dateClaimed = new Date();
-        if (claimedBy) {
-          const user = await User.findById(claimedBy);
-          if (
-            user &&
-            user.collegeId?.toString() === req.user.collegeId.toString()
-          ) {
-            update.claimedBy = new mongoose.Types.ObjectId(claimedBy);
-          }
-        }
-        break;
       case "returned":
+        // For LOST items being returned
         update.dateReturned = new Date();
-        if (returnedTo) {
+
+        // Set returnedTo - the person who receives the item back (the owner)
+        if (returnedTo && mongoose.Types.ObjectId.isValid(returnedTo)) {
           const user = await User.findById(returnedTo);
           if (
             user &&
-            user.collegeId?.toString() === req.user.collegeId.toString()
+            user.collegeId?.toString() === lostItem.collegeId.toString()
           ) {
             update.returnedTo = new mongoose.Types.ObjectId(returnedTo);
           }
+        } else {
+          // Default to the owner (reportedBy)
+          update.returnedTo = lostItem.reportedBy._id;
+        }
+
+        // Check if points already awarded for this item being returned
+        const existingReturnTransaction = await RewardTransaction.findOne({
+          referenceId: new mongoose.Types.ObjectId(id as any),
+          type: "earn_item_returned",
+        });
+
+        if (!existingReturnTransaction && rewardedTo) {
+          // Reward goes to the specified rewardedTo user
+          const reward = await addPointsForItemReturn(
+            rewardedTo,
+            id,
+            lostItem.itemName,
+          );
+
+          if (reward && reward.success) {
+            pointsAwarded = true;
+            rewardAmount = reward.points;
+            rewardRecipientId = rewardedTo;
+
+            // Get the user's name for notification
+            const rewardedUser = await User.findById(rewardedTo).select("name");
+
+            // Notify the rewarded user about the reward
+            await Notification.create({
+              userId: rewardedTo,
+              type: "reward_earned",
+              title: "🎉 You Earned Points!",
+              message: `You received ${reward.points} points for returning "${lostItem.itemName}" to its owner!`,
+              priority: "high",
+              data: {
+                itemId: id,
+                itemName: lostItem.itemName,
+                points: reward.points,
+                action: "returned",
+              },
+            });
+          }
+
+          // Notify the owner that their item was returned
+          await Notification.create({
+            userId: lostItem.reportedBy._id.toString(),
+            type: "item_returned",
+            title: "Item Successfully Returned",
+            message: `Your item "${lostItem.itemName}" has been successfully returned to you.`,
+            priority: "high",
+            data: {
+              itemId: id,
+              itemName: lostItem.itemName,
+            },
+          });
+        }
+        break;
+
+      case "claimed":
+        // For FOUND items being claimed
+        update.dateClaimed = new Date();
+
+        // Set claimedBy - the person who is claiming the item (the owner)
+        if (!claimedBy || !mongoose.Types.ObjectId.isValid(claimedBy)) {
+          res.status(400).json({
+            success: false,
+            message: "claimedBy is required for marking an item as claimed",
+          });
+          return;
+        }
+
+        const claimingUser = await User.findById(claimedBy);
+        if (
+          !claimingUser ||
+          claimingUser.collegeId?.toString() !== lostItem.collegeId.toString()
+        ) {
+          res.status(400).json({
+            success: false,
+            message: "Invalid user or user does not belong to this college",
+          });
+          return;
+        }
+
+        update.claimedBy = new mongoose.Types.ObjectId(claimedBy);
+
+        // Check if points already awarded for this item being claimed
+        const existingClaimTransaction = await RewardTransaction.findOne({
+          referenceId: new mongoose.Types.ObjectId(id as any),
+          type: "earn_item_claimed",
+        });
+
+        if (!existingClaimTransaction && rewardedTo) {
+          // Reward goes to the specified rewardedTo user (the finder/poster)
+          const reward = await addPointsForItemClaimed(
+            rewardedTo,
+            id,
+            lostItem.itemName,
+          );
+
+          if (reward && reward.success) {
+            pointsAwarded = true;
+            rewardAmount = reward.points;
+            rewardRecipientId = rewardedTo;
+
+            // Get the user's name for notification
+            const rewardedUser = await User.findById(rewardedTo).select("name");
+
+            // Notify the rewarded user about the reward
+            await Notification.create({
+              userId: rewardedTo,
+              type: "reward_earned",
+              title: "🎉 You Earned Points!",
+              message: `You received ${reward.points} points for helping return "${lostItem.itemName}" to its owner!`,
+              priority: "high",
+              data: {
+                itemId: id,
+                itemName: lostItem.itemName,
+                points: reward.points,
+                action: "claimed",
+              },
+            });
+          }
+
+          // Notify the claimant (owner) that their item was claimed
+          await Notification.create({
+            userId: claimedBy,
+            type: "item_claimed",
+            title: "Item Claimed Successfully",
+            message: `You have successfully claimed your item "${lostItem.itemName}". Thank you for using our platform!`,
+            priority: "high",
+            data: {
+              itemId: id,
+              itemName: lostItem.itemName,
+            },
+          });
         }
         break;
     }
 
+    // Update the item
     const updatedItem = await LostItem.findByIdAndUpdate(id, update, {
       new: true,
     })
@@ -910,9 +1468,15 @@ export const updateLostItemStatus = async (
       .populate("claimedBy", "name email avatar")
       .populate("returnedTo", "name email avatar");
 
+    // Build response message
+    let responseMessage = `Item status updated to ${status}.`;
+    if (pointsAwarded) {
+      responseMessage += ` and ${rewardAmount} points have been awarded!`;
+    }
+
     res.status(200).json({
       success: true,
-      message: `Item status updated to ${status}`,
+      message: responseMessage,
       data: updatedItem,
     });
   } catch (error: any) {
@@ -955,7 +1519,10 @@ export const verifyItem = async (
       return;
     }
 
-    const lostItem = await LostItem.findById(id);
+    // Populate with proper typing
+    const lostItem = await LostItem.findById(id).populate<{
+      reportedBy: { _id: string; name: string; email: string };
+    }>("reportedBy", "name email");
 
     if (!lostItem) {
       res.status(404).json({
@@ -976,6 +1543,187 @@ export const verifyItem = async (
 
     await lostItem.verify(req.user._id);
 
+    //  ITEM MATCHING LOGIC
+    let matchedItem: any = null;
+    let matchScore = 0;
+
+    if (lostItem.status === "lost") {
+      // If verified item is LOST, find matching FOUND items
+      const potentialMatches = await LostItem.find({
+        collegeId: lostItem.collegeId,
+        status: "found",
+        isActive: true,
+        isVerified: true,
+        category: lostItem.category,
+        $or: [
+          { itemName: { $regex: lostItem.itemName, $options: "i" } },
+          { tags: { $in: lostItem.tags } },
+          { keywords: { $in: lostItem.keywords } },
+        ],
+      }).populate<{ reportedBy: { _id: string; name: string; email: string } }>(
+        "reportedBy",
+        "name email",
+      );
+
+      for (const match of potentialMatches) {
+        let score = 0;
+
+        const nameSimilarity = calculateStringSimilarity(
+          lostItem.itemName.toLowerCase(),
+          match.itemName.toLowerCase(),
+        );
+        score += nameSimilarity * 0.4;
+
+        if (lostItem.category === match.category) {
+          score += 0.3;
+        }
+
+        const commonTags = lostItem.tags.filter((tag) =>
+          match.tags.includes(tag),
+        );
+        const tagScore =
+          commonTags.length / Math.max(lostItem.tags.length, match.tags.length);
+        score += tagScore * 0.2;
+
+        const commonKeywords = lostItem.keywords.filter((keyword) =>
+          match.keywords.includes(keyword),
+        );
+        const keywordScore =
+          commonKeywords.length /
+          Math.max(lostItem.keywords.length, match.keywords.length);
+        score += keywordScore * 0.1;
+
+        if (score > matchScore && score > 0.5) {
+          matchScore = score;
+          matchedItem = match;
+        }
+      }
+    } else if (lostItem.status === "found") {
+      // If verified item is FOUND, find matching LOST items
+      const potentialMatches = await LostItem.find({
+        collegeId: lostItem.collegeId,
+        status: "lost",
+        isActive: true,
+        isVerified: true,
+        category: lostItem.category,
+        $or: [
+          { itemName: { $regex: lostItem.itemName, $options: "i" } },
+          { tags: { $in: lostItem.tags } },
+          { keywords: { $in: lostItem.keywords } },
+        ],
+      }).populate<{ reportedBy: { _id: string; name: string; email: string } }>(
+        "reportedBy",
+        "name email",
+      );
+
+      for (const match of potentialMatches) {
+        let score = 0;
+
+        const nameSimilarity = calculateStringSimilarity(
+          lostItem.itemName.toLowerCase(),
+          match.itemName.toLowerCase(),
+        );
+        score += nameSimilarity * 0.4;
+
+        if (lostItem.category === match.category) {
+          score += 0.3;
+        }
+
+        const commonTags = lostItem.tags.filter((tag) =>
+          match.tags.includes(tag),
+        );
+        const tagScore =
+          commonTags.length / Math.max(lostItem.tags.length, match.tags.length);
+        score += tagScore * 0.2;
+
+        const commonKeywords = lostItem.keywords.filter((keyword) =>
+          match.keywords.includes(keyword),
+        );
+        const keywordScore =
+          commonKeywords.length /
+          Math.max(lostItem.keywords.length, match.keywords.length);
+        score += keywordScore * 0.1;
+
+        if (score > matchScore && score > 0.5) {
+          matchScore = score;
+          matchedItem = match;
+        }
+      }
+    }
+
+    // If a match is found, send notifications and emails
+    if (matchedItem && matchScore > 0.5) {
+      const Notification = mongoose.model("Notification");
+      const { sendEmail, emailTemplates } = require("../utils/email.service");
+
+      // Create notification for the reporter of the matched item
+      await Notification.create({
+        userId: matchedItem.reportedBy._id,
+        type: "item_match",
+        title: "Potential Match Found!",
+        message: `Your ${matchedItem.status === "lost" ? "lost" : "found"} item "${matchedItem.itemName}" matches with a ${lostItem.status === "lost" ? "lost" : "found"} item "${lostItem.itemName}" (${Math.round(matchScore * 100)}% match)`,
+        priority: matchScore > 0.8 ? "high" : "medium",
+        data: {
+          lostItemId:
+            lostItem.status === "lost" ? lostItem._id : matchedItem._id,
+          foundItemId:
+            lostItem.status === "found" ? lostItem._id : matchedItem._id,
+          matchScore,
+        },
+      });
+
+      // Create notification for the reporter of the verified item (if different)
+      if (
+        lostItem.reportedBy._id.toString() !==
+        matchedItem.reportedBy._id.toString()
+      ) {
+        await Notification.create({
+          userId: lostItem.reportedBy._id,
+          type: "item_match",
+          title: "Potential Match Found!",
+          message: `Your ${lostItem.status === "lost" ? "lost" : "found"} item "${lostItem.itemName}" matches with a ${matchedItem.status === "lost" ? "lost" : "found"} item "${matchedItem.itemName}" (${Math.round(matchScore * 100)}% match)`,
+          priority: matchScore > 0.8 ? "high" : "medium",
+          data: {
+            lostItemId:
+              lostItem.status === "lost" ? lostItem._id : matchedItem._id,
+            foundItemId:
+              lostItem.status === "found" ? lostItem._id : matchedItem._id,
+            matchScore,
+          },
+        });
+      }
+
+      // Send email to matched item owner
+      if (matchedItem.reportedBy.email) {
+        await sendEmail({
+          to: matchedItem.reportedBy.email,
+          ...emailTemplates.itemMatch(
+            matchedItem.reportedBy.name,
+            matchedItem.itemName,
+            matchScore,
+            lostItem.status === "found" ? lostItem._id : matchedItem._id,
+          ),
+        });
+      }
+
+      // Send email to verified item owner (if different)
+      if (
+        lostItem.reportedBy.email &&
+        lostItem.reportedBy._id.toString() !==
+          matchedItem.reportedBy._id.toString()
+      ) {
+        await sendEmail({
+          to: lostItem.reportedBy.email,
+          ...emailTemplates.itemMatch(
+            lostItem.reportedBy.name,
+            lostItem.itemName,
+            matchScore,
+            lostItem.status === "found" ? lostItem._id : matchedItem._id,
+          ),
+        });
+      }
+    }
+
     res.status(200).json({
       success: true,
       message: "Item verified successfully",
@@ -983,6 +1731,16 @@ export const verifyItem = async (
         isVerified: lostItem.isVerified,
         verifiedBy: lostItem.verifiedBy,
         verifiedAt: lostItem.verifiedAt,
+        matchFound: !!matchedItem,
+        matchScore: matchScore > 0 ? matchScore : undefined,
+        matchedItem: matchedItem
+          ? {
+              id: matchedItem._id,
+              itemName: matchedItem.itemName,
+              status: matchedItem.status,
+              reportedBy: matchedItem.reportedBy.name,
+            }
+          : undefined,
       },
     });
   } catch (error: any) {
@@ -993,6 +1751,47 @@ export const verifyItem = async (
     });
   }
 };
+
+//  HELPER FUNCTION FOR STRING SIMILARITY
+
+function calculateStringSimilarity(str1: string, str2: string): number {
+  if (str1 === str2) return 1;
+  if (str1.length === 0 || str2.length === 0) return 0;
+
+  // Check if one string contains the other
+  if (str1.includes(str2) || str2.includes(str1)) {
+    const longer = Math.max(str1.length, str2.length);
+    const shorter = Math.min(str1.length, str2.length);
+    return shorter / longer;
+  }
+
+  // Calculate Levenshtein distance based similarity
+  const track = Array(str2.length + 1)
+    .fill(null)
+    .map(() => Array(str1.length + 1).fill(null));
+
+  for (let i = 0; i <= str1.length; i += 1) {
+    track[0][i] = i;
+  }
+  for (let j = 0; j <= str2.length; j += 1) {
+    track[j][0] = j;
+  }
+
+  for (let j = 1; j <= str2.length; j += 1) {
+    for (let i = 1; i <= str1.length; i += 1) {
+      const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+      track[j][i] = Math.min(
+        track[j][i - 1] + 1,
+        track[j - 1][i] + 1,
+        track[j - 1][i - 1] + indicator,
+      );
+    }
+  }
+
+  const distance = track[str2.length][str1.length];
+  const maxLength = Math.max(str1.length, str2.length);
+  return 1 - distance / maxLength;
+}
 
 // IMAGE MANAGEMENT
 export const addImages = async (
@@ -1494,6 +2293,25 @@ export const likeLostItem = async (
 
     await lostItem.like(req.user._id);
 
+    //  CREATE NOTIFICATION
+    // Notify post owner about like (if liker is not the owner)
+    if (lostItem.reportedBy._id.toString() !== req.user._id.toString()) {
+      const Notification = mongoose.model("Notification");
+
+      await Notification.create({
+        userId: lostItem.reportedBy._id,
+        type: "like",
+        title: "Someone Liked Your Post",
+        message: `${req.user.name} liked your post "${lostItem.itemName}"`,
+        priority: "low",
+        data: {
+          postId: id,
+          userId: req.user._id,
+          postTitle: lostItem.itemName,
+        },
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: "Item liked successfully",
@@ -1596,6 +2414,26 @@ export const shareLostItem = async (
     }
 
     await lostItem.share(req.user._id, sharedOn);
+
+    //  CREATE NOTIFICATION
+    // Notify post owner about share (if sharer is not the owner)
+    if (lostItem.reportedBy._id.toString() !== req.user._id.toString()) {
+      const Notification = mongoose.model("Notification");
+
+      await Notification.create({
+        userId: lostItem.reportedBy._id,
+        type: "share",
+        title: "Someone Shared Your Post",
+        message: `${req.user.name} shared your post "${lostItem.itemName}" on ${sharedOn}`,
+        priority: "medium",
+        data: {
+          postId: id,
+          userId: req.user._id,
+          postTitle: lostItem.itemName,
+          sharedOn,
+        },
+      });
+    }
 
     res.status(200).json({
       success: true,

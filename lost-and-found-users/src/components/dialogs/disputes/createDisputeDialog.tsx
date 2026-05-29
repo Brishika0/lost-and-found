@@ -2,15 +2,12 @@ import React, { useState, useRef } from "react";
 import { useCreateDispute } from "@/hooks/useDisputes";
 import {
   MessageCircle,
-  X,
-  Loader2,
   AlertTriangle,
   Scale,
   FileText,
-  ImageIcon,
   Upload,
   Trash2,
-  Eye,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +32,6 @@ import {
 import type { LostItem } from "@/types/lostItem.types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 interface DisputeDialogProps {
   open: boolean;
@@ -66,14 +62,12 @@ export const DisputeDialog: React.FC<DisputeDialogProps> = ({
   open,
   onOpenChange,
   item,
-  currentUserId,
   onSuccess,
 }) => {
   const [title, setTitle] = useState("");
   const [type, setType] = useState("wrongful_claim");
   const [description, setDescription] = useState("");
   const [evidenceFiles, setEvidenceFiles] = useState<EvidenceFile[]>([]);
-  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { mutate: createDispute, isPending, error } = useCreateDispute();
@@ -82,7 +76,7 @@ export const DisputeDialog: React.FC<DisputeDialogProps> = ({
   const uploadFileToServer = async (file: File): Promise<string> => {
     // This is where you'd make your actual API call to upload the file
     // For now, we'll simulate an upload
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         // Simulate successful upload
         // In reality, you'd get the URL back from your server
@@ -327,7 +321,6 @@ export const DisputeDialog: React.FC<DisputeDialogProps> = ({
                 type="button"
                 variant="outline"
                 onClick={openFileDialog}
-                disabled={uploading}
                 className="h-24 w-full border-2 border-dashed transition-colors hover:border-orange-500 hover:bg-orange-50"
               >
                 <div className="flex flex-col items-center gap-2">
@@ -428,9 +421,7 @@ export const DisputeDialog: React.FC<DisputeDialogProps> = ({
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={
-              isPending || !title.trim() || !description.trim() || uploading
-            }
+            disabled={isPending || !title.trim() || !description.trim()}
             className="bg-orange-600 hover:bg-orange-700"
           >
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

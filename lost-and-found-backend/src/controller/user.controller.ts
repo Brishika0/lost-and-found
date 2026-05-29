@@ -61,15 +61,8 @@ export const getStudents = async (
       if (collegeId && collegeId !== "") {
         filter.collegeId = new mongoose.Types.ObjectId(collegeId);
       }
-    } else if (userRole === "college_admin") {
-      // College admin can only see students from their college
-      filter.collegeId = new mongoose.Types.ObjectId(userCollegeId!);
     } else {
-      res.status(403).json({
-        success: false,
-        message: "Access denied. Insufficient permissions.",
-      });
-      return;
+      filter.collegeId = new mongoose.Types.ObjectId(userCollegeId!);
     }
 
     // Search by name or email
@@ -172,17 +165,6 @@ export const getCollegeAdmins = async (
   res: Response,
 ): Promise<void> => {
   try {
-    const userRole = req.user?.role;
-
-    // Only super admin can access college admins
-    if (userRole !== "super_admin") {
-      res.status(403).json({
-        success: false,
-        message: "Access denied. Only super admin can view college admins.",
-      });
-      return;
-    }
-
     const {
       search,
       isActive,

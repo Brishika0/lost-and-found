@@ -8,6 +8,7 @@ export interface AuthRequest extends Request {
     role: UserRole;
     isActive: boolean;
     collegeId?: string;
+    name?: string;
   };
 }
 

@@ -352,7 +352,7 @@ export const usePermanentDeleteComment = () => {
     mutationFn: (commentId: string) =>
       commentApis.permanentDeleteComment(commentId),
 
-    onSuccess: (response, commentId) => {
+    onSuccess: (response) => {
       toast.success(response.message || "Comment permanently deleted");
 
       // Invalidate all comment queries

@@ -14,7 +14,7 @@ import {
   sendEmail,
   emailTemplates,
   sendDisputeEmail,
-} from "../utils/email.service";
+} from "../services/email.service";
 
 //  Type Definitions
 

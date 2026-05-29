@@ -17,7 +17,7 @@ import {
   Package,
   Scale,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChangePasswordDialog } from "../dialogs/changePasswordDialog";
 import {
@@ -31,6 +31,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { RewardPointsBadge } from "../RewardPointsBadge";
 
 export function ProfilePage() {
   const { user, isLoading, logout } = useAuth();
@@ -141,10 +142,6 @@ export function ProfilePage() {
                 Edit
               </Button>
               <ChangePasswordDialog />
-              {/* <Button variant="destructive" size="sm" >
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-              </Button> */}
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
@@ -176,6 +173,17 @@ export function ProfilePage() {
           </div>
         </CardContent>
       </Card>
+
+      <div className="px-4">
+        <Link to="/my-rewards">
+          <RewardPointsBadge
+            variant="default"
+            showLevel={true}
+            className="rounded-none"
+          />
+        </Link>
+      </div>
+
       <div className="p-4 pb-8">
         {/* Info Grid - 3 columns on desktop, 1 on mobile */}
         <div className="grid gap-4 md:grid-cols-3">

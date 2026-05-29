@@ -2,11 +2,13 @@ import { Chatbox, ConversationList } from "@talkjs/react-components";
 import "@talkjs/react-components/default.css";
 import { getTalkSession } from "@talkjs/core";
 import type { SelectConversationEvent } from "@talkjs/react-components";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { APP_ID } from "@/hooks/useStartConversation";
+import { APP_ID, useStartConversation } from "@/hooks/useStartConversation";
 import { API_BASE_URL } from "@/services/authApis";
+import { useGetCollegeAdmins, useGetStudents } from "@/hooks/useUsers";
+import type { User } from "@/types/user.types";
 
 export default function ChatPage() {
   const { user } = useAuth();
@@ -36,18 +38,169 @@ function ChatPageInner({ userId, user }: { userId: string; user: any }) {
   >(urlConversationId ?? null);
 
   const [showNewChat, setShowNewChat] = useState(false);
-  const [contacts, setContacts] = useState<
-    { _id: string; name: string; avatar?: string; email?: string }[]
-  >([]);
-  const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
+  const [selectedContacts, setSelectedContacts] = useState<User[]>([]);
   const [groupName, setGroupName] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [modalSearchQuery, setModalSearchQuery] = useState("");
   const [showMobileSidebar, setShowMobileSidebar] = useState(true);
   const [activeTab, setActiveTab] = useState<"chats" | "people">("chats");
+  const [modalRoleTab, setModalRoleTab] = useState<"student" | "admin">(
+    "student",
+  );
   const modalRef = useRef<HTMLDivElement>(null);
   const mobileSidebarRef = useRef<HTMLDivElement>(null);
   const [conversationsData, setConversationsData] = useState<any[]>([]);
+
+  const { startConversation, loading: isStartingConversation } =
+    useStartConversation();
+
+  // Fetch students only
+  const { data: studentsData, isLoading: isStudentsLoading } = useGetStudents({
+    limit: 1000,
+    collegeId: user?.collegeId?._id || user?.collegeId,
+  });
+
+  const { data: adminsData } = useGetCollegeAdmins({
+    limit: 1000,
+    collegeId: user?.collegeId?._id || user?.collegeId,
+  });
+
+  // Filter students based on search
+  const filteredStudents = useMemo(() => {
+    if (!studentsData?.data || studentsData.data.length === 0) return [];
+
+    let users = [...studentsData.data];
+
+    // Filter by search
+    if (modalSearchQuery) {
+      users = users.filter(
+        (u: User) =>
+          u.name.toLowerCase().includes(modalSearchQuery.toLowerCase()) ||
+          u.email.toLowerCase().includes(modalSearchQuery.toLowerCase()),
+      );
+    }
+
+    // Exclude current user from contacts list
+    users = users.filter((u: User) => u._id !== userId);
+
+    return users;
+  }, [studentsData, modalSearchQuery, userId]);
+
+  // Filter admins based on search (placeholder until admin API is ready)
+  const filteredAdmins = useMemo(() => {
+    if (!adminsData || adminsData.data.length === 0) return [];
+
+    let users = [...adminsData.data];
+
+    if (modalSearchQuery) {
+      users = users.filter(
+        (u: User) =>
+          u.name.toLowerCase().includes(modalSearchQuery.toLowerCase()) ||
+          u.email.toLowerCase().includes(modalSearchQuery.toLowerCase()),
+      );
+    }
+
+    users = users.filter((u: User) => u._id !== userId);
+
+    return users;
+  }, [adminsData, modalSearchQuery, userId]);
+
+  // Get users based on selected tab
+  const getUsersForCurrentTab = () => {
+    if (modalRoleTab === "student") {
+      return filteredStudents;
+    } else {
+      return filteredAdmins;
+    }
+  };
+
+  // Handle starting a conversation with selected user(s)
+  const handleStartConversation = async () => {
+    if (selectedContacts.length === 0) return;
+
+    setLoading(true);
+
+    try {
+      if (selectedContacts.length === 1) {
+        // DM - single user
+        const otherUser = selectedContacts[0];
+        await startConversation(
+          {
+            _id: otherUser._id,
+            name: otherUser.name,
+            avatar: otherUser.avatar,
+          },
+          undefined, // No prefilled message for new chat
+          undefined, // No post preview
+        );
+        // startConversation already handles navigation
+        setShowNewChat(false);
+      } else {
+        // Group chat - create group via API
+        const res = await fetch(`${API_BASE_URL}/conversations`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            type: "group",
+            participantIds: selectedContacts.map((c) => c._id),
+            subject: groupName || "Group Chat",
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to create group chat");
+        }
+
+        const { data } = await res.json();
+
+        // Register participants in TalkJS
+        const talkSession = getTalkSession({ appId: APP_ID, userId });
+
+        talkSession.currentUser.createIfNotExists({
+          name: user?.name ?? "Me",
+          photoUrl: user?.avatar,
+        });
+
+        for (const participant of selectedContacts) {
+          talkSession.user(participant._id).createIfNotExists({
+            name: participant.name,
+            photoUrl: participant.avatar,
+          });
+        }
+
+        const talkConv = talkSession.conversation(data.talkjsConversationId);
+        talkConv.createIfNotExists({
+          subject: groupName || "Group Chat",
+          photoUrl: undefined,
+        });
+
+        for (const participant of selectedContacts) {
+          talkConv.participant(participant._id).createIfNotExists();
+        }
+
+        // Add to conversations list and select it
+        setConversationsData((prev) => [...prev, data]);
+        setSelectedConversationId(data.talkjsConversationId);
+        setShowNewChat(false);
+        setSelectedContacts([]);
+        setGroupName("");
+        setModalRoleTab("student");
+        setModalSearchQuery("");
+
+        if (window.innerWidth < 768) {
+          setShowMobileSidebar(false);
+        }
+      }
+    } catch (err) {
+      console.error("handleStartConversation error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!userId) return;
@@ -129,6 +282,8 @@ function ChatPageInner({ userId, user }: { userId: string; user: any }) {
         setShowNewChat(false);
         setSelectedContacts([]);
         setGroupName("");
+        setModalRoleTab("student");
+        setModalSearchQuery("");
       }
     }
 
@@ -149,80 +304,22 @@ function ChatPageInner({ userId, user }: { userId: string; user: any }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  async function handleCreateChat() {
-    if (selectedContacts.length === 0) return;
-    setLoading(true);
-
-    try {
-      const isGroup = selectedContacts.length > 1;
-
-      const res = await fetch(`${API_BASE_URL}/conversations`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          credentials: "include",
-        },
-        body: JSON.stringify({
-          type: isGroup ? "group" : "dm",
-          participantIds: selectedContacts,
-          subject: isGroup ? groupName || "Group Chat" : undefined,
-        }),
-      });
-
-      const { data } = await res.json();
-      setConversationsData((prev) => [...prev, data]);
-
-      for (const p of data.participants) {
-        if (p.userId !== userId) {
-          session.user(p.userId).createIfNotExists({ name: p.name });
-        }
-      }
-
-      const talkConv = session.conversation(data.talkjsConversationId);
-
-      let conversationSubject = data.subject;
-      if (data.type === "dm") {
-        const otherParticipant = data.participants.find(
-          (p: any) => p.userId !== userId,
-        );
-        conversationSubject = otherParticipant?.name || "Chat";
-      }
-
-      talkConv.createIfNotExists({
-        subject: conversationSubject ?? undefined,
-        photoUrl:
-          data.type === "dm"
-            ? data.participants.find((p: any) => p.userId !== userId)?.avatar
-            : undefined,
-      });
-
-      for (const p of data.participants) {
-        talkConv.participant(p.userId).createIfNotExists();
-      }
-
-      setSelectedConversationId(data.talkjsConversationId);
-      setShowNewChat(false);
-      setSelectedContacts([]);
-      setGroupName("");
-
-      if (window.innerWidth < 768) {
-        setShowMobileSidebar(false);
-      }
-    } catch (err) {
-      console.error("handleCreateChat error:", err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
   const handleBackToChats = () => {
     setShowMobileSidebar(true);
     setSelectedConversationId(null);
   };
+
+  // Get user role badge color and text
+  const getUserRoleInfo = (role: string) => {
+    if (role === "college_admin") {
+      return { bg: "bg-purple-100", text: "text-purple-700", label: "Admin" };
+    }
+    return { bg: "bg-blue-100", text: "text-blue-700", label: "Student" };
+  };
+
+  const usersToShow = getUsersForCurrentTab();
+  const isLoading = modalRoleTab === "student" ? isStudentsLoading : false;
+  const isCreating = loading || isStartingConversation;
 
   return (
     <div className="flex h-svh w-full grid-cols-12 overflow-hidden bg-[#F0F2F5] md:grid">
@@ -431,7 +528,6 @@ function ChatPageInner({ userId, user }: { userId: string; user: any }) {
       </div>
 
       {/* Chat Panel */}
-      {/* Chat Panel */}
       <main className="col-span-9 flex flex-col bg-white">
         {selectedConversationId ? (
           <Chatbox
@@ -480,15 +576,16 @@ function ChatPageInner({ userId, user }: { userId: string; user: any }) {
         )}
       </main>
 
-      {/* New Chat Modal */}
+      {/* New Chat Modal - Messenger Style */}
       {showNewChat && (
         <div className="fixed inset-0 z-30 flex items-end justify-center bg-black/50 md:items-center">
           <div
             ref={modalRef}
-            className="w-full max-w-md rounded-t-2xl bg-white shadow-xl md:rounded-2xl"
+            className="flex max-h-[90%] w-full max-w-md flex-col overflow-scroll rounded-t-2xl bg-white shadow-xl md:rounded-2xl"
           >
-            <div className="flex items-center justify-between border-b border-[#e4e6eb] p-4">
-              <h2 className="text-lg font-semibold text-[#050505]">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-[#e4e6eb] px-4 py-2">
+              <h2 className="text-xl font-semibold text-[#050505]">
                 New message
               </h2>
               <button
@@ -496,118 +593,222 @@ function ChatPageInner({ userId, user }: { userId: string; user: any }) {
                   setShowNewChat(false);
                   setSelectedContacts([]);
                   setGroupName("");
+                  setModalRoleTab("student");
+                  setModalSearchQuery("");
                 }}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F0F2F5] text-xl hover:bg-[#E4E6EB]"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F0F2F5] text-xl transition-colors hover:bg-[#E4E6EB]"
               >
                 ×
               </button>
             </div>
 
-            <div className="max-h-[70vh] overflow-y-auto p-4">
-              {selectedContacts.length > 1 && (
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    placeholder="Group name (optional)"
-                    value={groupName}
-                    onChange={(e) => setGroupName(e.target.value)}
-                    className="w-full rounded-lg border border-[#e4e6eb] px-3 py-2 text-sm focus:border-[#0084ff] focus:outline-none"
-                  />
-                </div>
-              )}
-
-              <div className="mb-4">
-                <div className="flex items-center gap-2 rounded-lg bg-[#F0F2F5] px-3 py-2">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#65676B"
-                    strokeWidth="2"
-                  >
-                    <circle cx="11" cy="11" r="6" />
-                    <line x1="16.5" y1="16.5" x2="21" y2="21" />
-                  </svg>
-                  <input
-                    type="text"
-                    placeholder="Search people"
-                    className="flex-1 bg-transparent text-sm outline-none"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
+            {/* Group Name Input (only for groups) */}
+            {selectedContacts.length > 1 && (
+              <div className="border-b border-[#e4e6eb] px-4 py-2">
+                <input
+                  type="text"
+                  placeholder="Group name (optional)"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                  className="w-full rounded-lg border border-[#e4e6eb] px-3 py-2 text-sm focus:border-[#0084ff] focus:outline-none"
+                />
               </div>
+            )}
 
-              <div className="space-y-1">
-                {filteredContacts.length === 0 ? (
-                  <div className="py-8 text-center">
-                    <p className="text-sm text-[#65676B]">
-                      {searchQuery
-                        ? "No results found"
-                        : "No contacts available"}
-                    </p>
-                    {!searchQuery && (
-                      <p className="mt-1 text-xs text-[#65676B]">
-                        Start a conversation from a lost item post
-                      </p>
-                    )}
-                  </div>
-                ) : (
-                  filteredContacts.map((contact) => (
-                    <label
-                      key={contact._id}
-                      className={`flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 transition-colors ${
-                        selectedContacts.includes(contact._id)
-                          ? "bg-[#E7F3FF]"
-                          : "hover:bg-[#F0F2F5]"
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedContacts.includes(contact._id)}
-                        onChange={(e) =>
-                          setSelectedContacts((prev) =>
-                            e.target.checked
-                              ? [...prev, contact._id]
-                              : prev.filter((id) => id !== contact._id),
-                          )
-                        }
-                        className="h-5 w-5 rounded border-[#e4e6eb] text-[#0084ff] focus:ring-[#0084ff]"
-                      />
-                      <div className="h-10 w-10 overflow-hidden rounded-full bg-[#F0F2F5]">
-                        {contact.avatar ? (
-                          <img
-                            src={contact.avatar}
-                            className="h-full w-full object-cover"
-                            alt={contact.name}
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center text-sm font-medium text-[#050505]">
-                            {contact.name[0].toUpperCase()}
-                          </div>
-                        )}
-                      </div>
-                      <span className="flex-1 text-sm text-[#050505]">
-                        {contact.name}
-                      </span>
-                    </label>
-                  ))
-                )}
+            {/* Search Input */}
+            <div className="border-b border-[#e4e6eb] px-4 py-2">
+              <div className="flex items-center gap-2 rounded-full bg-[#F0F2F5] px-3 py-2">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#65676B"
+                  strokeWidth="2"
+                >
+                  <circle cx="11" cy="11" r="6" />
+                  <line x1="16.5" y1="16.5" x2="21" y2="21" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search people"
+                  className="flex-1 bg-transparent text-sm outline-none placeholder:text-[#65676B]"
+                  value={modalSearchQuery}
+                  onChange={(e) => setModalSearchQuery(e.target.value)}
+                />
               </div>
             </div>
 
+            {/* Role Tabs - Only Student and Admin */}
+            <div className="flex border-b border-[#e4e6eb] px-4">
+              <button
+                onClick={() => setModalRoleTab("student")}
+                className={`py-2 text-sm font-medium transition-colors ${
+                  modalRoleTab === "student"
+                    ? "border-b-2 border-[#0084ff] text-[#0084ff]"
+                    : "text-[#65676B]"
+                }`}
+              >
+                Students
+              </button>
+              <button
+                onClick={() => setModalRoleTab("admin")}
+                className={`ml-4 py-2 text-sm font-medium transition-colors ${
+                  modalRoleTab === "admin"
+                    ? "border-b-2 border-[#0084ff] text-[#0084ff]"
+                    : "text-[#65676B]"
+                }`}
+              >
+                Admins
+              </button>
+            </div>
+
+            {/* Selected Contacts Display */}
+            {selectedContacts.length > 0 && (
+              <div className="flex flex-wrap gap-2 border-b border-[#e4e6eb] p-4">
+                <span className="text-xs text-[#65676B]">To:</span>
+                {selectedContacts.map((contact) => (
+                  <div
+                    key={contact._id}
+                    className="flex items-center gap-1 rounded-full bg-[#E7F3FF] px-2 py-1"
+                  >
+                    <span className="text-xs text-[#050505]">
+                      {contact.name}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setSelectedContacts((prev) =>
+                          prev.filter((c) => c._id !== contact._id),
+                        )
+                      }
+                      className="flex h-4 w-4 items-center justify-center rounded-full text-[#65676B] hover:text-[#050505]"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* User List */}
+            <div className="max-h-[400px] overflow-y-scroll">
+              {isLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#0084ff] border-t-transparent"></div>
+                </div>
+              ) : usersToShow.length === 0 ? (
+                <div className="py-12 text-center">
+                  <p className="text-sm text-[#65676B]">
+                    {modalSearchQuery
+                      ? "No results found"
+                      : modalRoleTab === "student"
+                        ? "No students available"
+                        : "No admins available"}
+                  </p>
+                  {!modalSearchQuery && modalRoleTab === "student" && (
+                    <p className="mt-1 text-xs text-[#65676B]">
+                      Students will appear here once they register
+                    </p>
+                  )}
+                </div>
+              ) : (
+                usersToShow.map((contact: User) => {
+                  const roleInfo = getUserRoleInfo(contact.role);
+                  const isSelected = selectedContacts.some(
+                    (c) => c._id === contact._id,
+                  );
+
+                  return (
+                    <div
+                      key={contact._id}
+                      className={`flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors ${
+                        isSelected ? "bg-[#E7F3FF]" : "hover:bg-[#F0F2F5]"
+                      }`}
+                      onClick={() =>
+                        setSelectedContacts((prev) =>
+                          isSelected
+                            ? prev.filter((c) => c._id !== contact._id)
+                            : [...prev, contact],
+                        )
+                      }
+                    >
+                      {/* Checkbox */}
+                      <div
+                        className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${
+                          isSelected
+                            ? "border-[#0084ff] bg-[#0084ff]"
+                            : "border-[#bcc0c4]"
+                        }`}
+                      >
+                        {isSelected && (
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                          >
+                            <path
+                              d="M2 6L5 9L10 3"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
+
+                      {/* Avatar */}
+                      <div className="relative h-12 w-12 flex-shrink-0">
+                        {contact.avatar ? (
+                          <img
+                            src={contact.avatar}
+                            className="h-full w-full rounded-full object-cover"
+                            alt={contact.name}
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-[#0084ff] to-[#00c6ff] text-white">
+                            <span className="text-base font-medium">
+                              {contact.name[0]?.toUpperCase() || "?"}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* User Info */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-[#050505]">
+                            {contact.name}
+                          </span>
+                          <span
+                            className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${roleInfo.bg} ${roleInfo.text}`}
+                          >
+                            {roleInfo.label}
+                          </span>
+                        </div>
+                        <p className="truncate text-xs text-[#65676B]">
+                          {contact.email}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Create Button */}
             <div className="border-t border-[#e4e6eb] p-4">
               <button
-                onClick={handleCreateChat}
-                disabled={selectedContacts.length === 0 || loading}
-                className="w-full rounded-full bg-[#0084ff] py-2 text-sm font-medium text-white transition-colors hover:bg-[#0073e0] disabled:cursor-not-allowed disabled:opacity-50"
+                onClick={handleStartConversation}
+                disabled={selectedContacts.length === 0 || isCreating}
+                className="w-full rounded-full bg-[#0084ff] py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#0073e0] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {loading
+                {isCreating
                   ? "Creating..."
                   : selectedContacts.length > 1
-                    ? `Create group (${selectedContacts.length})`
-                    : "Start conversation"}
+                    ? `Create Group (${selectedContacts.length})`
+                    : "Start Conversation"}
               </button>
             </div>
           </div>

@@ -8,13 +8,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,8 +23,6 @@ import {
 } from "@/schema/zone.schema";
 import { ZONE_TYPE_OPTIONS } from "@/types/zone.types";
 import { useCreateZone, useUpdateZone, useGetZones } from "@/hooks/useZones";
-import { useGetColleges } from "@/hooks/useColleges";
-import type { College } from "@/types/college";
 import type { Zone } from "@/types/zone.types";
 
 // Leaflet Map imports
@@ -120,19 +111,11 @@ export function ZoneFormDialog({
   const createZone = useCreateZone();
   const updateZone = useUpdateZone();
 
-  // Fetch colleges for super admin
-  const { data: collegesData, isLoading: isCollegesLoading } = useGetColleges({
-    page: 1,
-    limit: 100,
-  });
-
   // Fetch zones for parent zone selection
   const { data: zonesData, isLoading: isZonesLoading } = useGetZones({
     collegeId: user?.college?.id,
     isActive: true,
   });
-
-  const collegesList = collegesData?.data ?? [];
 
   // Parent zones options (filtered by selected college)
   const parentZoneOptions =

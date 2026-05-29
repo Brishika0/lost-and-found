@@ -18,8 +18,6 @@ import {
 } from "@/components/ui/select";
 import { userColumns } from "../../columns/userColumns";
 import { DataTable } from "../../dataTables/dataTable";
-import { useGetColleges } from "@/hooks/useColleges";
-import type { College } from "@/types/college";
 import { UserFormDialog } from "../../dialogs/userFromDialog";
 import { Button } from "../../ui/button";
 import { Plus } from "lucide-react";
@@ -44,11 +42,6 @@ export default function StudentsPage() {
 
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data: collegesData, isLoading: isCollegeLoading } = useGetColleges({
-    page: 1,
-    limit: 100,
-  });
-
   const { data, isLoading, refetch } = useGetStudents({
     page,
     limit,
@@ -56,8 +49,6 @@ export default function StudentsPage() {
     isActive,
     isEmailVerified,
   });
-
-  const collegesList = collegesData?.data ?? [];
 
   const toggleStatus = useToggleUserStatus();
   const deleteUser = useDeleteUser();
@@ -88,7 +79,7 @@ export default function StudentsPage() {
     }
   };
 
-  const handleResendVerification = async (id: string, email: string) => {
+  const handleResendVerification = async (id: string) => {
     try {
       await resendVerification.mutateAsync(id);
     } catch (error) {

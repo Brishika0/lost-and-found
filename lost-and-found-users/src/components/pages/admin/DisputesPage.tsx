@@ -2,9 +2,6 @@ import { useState } from "react";
 import {
   useDisputes,
   useUpdateDisputeStatus,
-  useResolveDispute,
-  useEscalateDispute,
-  useAssignAdminToDispute,
   useArchiveDispute,
   useDisputeStatistics,
 } from "@/hooks/useDisputes";
@@ -21,7 +18,6 @@ import { DataTable } from "@/components/dataTables/dataTable";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, AlertCircle } from "lucide-react";
 import type { Dispute } from "@/types/dispute.types";
-import { useDebounce } from "@/utils/debounce";
 import { AddMessageDialog } from "@/components/dialogs/disputes/AddMessageDialog";
 import { ResolveDisputeDialog } from "@/components/dialogs/disputes/ResolveDisputeDialog";
 import { EscalateDisputeDialog } from "@/components/dialogs/disputes/EscalateDisputeDialog";
@@ -39,14 +35,10 @@ export default function DisputesPage() {
   const [toDate, setToDate] = useState<string>("");
 
   // Dialog states
-  const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
-  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [resolveDialogOpen, setResolveDialogOpen] = useState(false);
   const [escalateDialogOpen, setEscalateDialogOpen] = useState(false);
   const [selectedDispute, setSelectedDispute] = useState<Dispute | null>(null);
-
-  const debouncedSearch = useDebounce(search, 500);
 
   // Queries
   const { data, isLoading, refetch } = useDisputes({
@@ -63,9 +55,6 @@ export default function DisputesPage() {
 
   // Mutations
   const updateStatus = useUpdateDisputeStatus();
-  const resolveDispute = useResolveDispute();
-  const escalateDispute = useEscalateDispute();
-  const assignAdmin = useAssignAdminToDispute();
   const archiveDispute = useArchiveDispute();
 
   const disputes = data?.data?.disputes ?? [];
@@ -75,7 +64,6 @@ export default function DisputesPage() {
   // Handlers
   const handleView = (dispute: Dispute) => {
     setSelectedDispute(dispute);
-    setViewDialogOpen(true);
   };
 
   const handleAddMessage = (dispute: Dispute) => {
@@ -102,7 +90,6 @@ export default function DisputesPage() {
 
   const handleAssignAdmin = (dispute: Dispute) => {
     setSelectedDispute(dispute);
-    setAssignDialogOpen(true);
   };
 
   const handleArchive = async (id: string) => {

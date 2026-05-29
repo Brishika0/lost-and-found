@@ -3,14 +3,13 @@ import dotenv from "dotenv";
 
 // Import all seed data
 import { colleges } from "./seedData/colleges.seed";
-import { users } from "./seedData/users.seed";
-import { campusZones } from "./seedData/campusZones.seed";
 import { lostItems } from "./seedData/lostItems.seed";
 import { comments } from "./seedData/comments.seed";
-import { chats } from "./seedData/chats.seed";
 import { notifications } from "./seedData/notifications.seed";
 import { disputes } from "./seedData/disputes.seed";
 import { analytics } from "./seedData/analytics.seed";
+import { zones } from "./seedData/zones.seed";
+import { users } from "./seedData/users.seed";
 
 // Import all models
 import College from "./models/college.model";
@@ -74,7 +73,7 @@ const seedDatabase = async () => {
 
     // 3. Insert Zones
     console.log("📍 Seeding campus zones...");
-    const createdZones = await Zone.insertMany(campusZones);
+    const createdZones = await Zone.insertMany(zones);
     console.log(`✅ Inserted ${createdZones.length} zones\n`);
 
     // 4. Insert LostItems
@@ -88,9 +87,9 @@ const seedDatabase = async () => {
     console.log(`✅ Inserted ${createdComments.length} comments\n`);
 
     // 6. Insert Chats
-    console.log("💭 Seeding chats...");
-    const createdChats = await Chat.insertMany(chats);
-    console.log(`✅ Inserted ${createdChats.length} chats\n`);
+    // console.log("💭 Seeding chats...");
+    // const createdChats = await Chat.insertMany(chats);
+    // console.log(`✅ Inserted ${createdChats.length} chats\n`);
 
     // 7. Insert Notifications
     console.log("🔔 Seeding notifications...");
@@ -117,7 +116,6 @@ const seedDatabase = async () => {
     console.log(`📍 Zones: ${createdZones.length}`);
     console.log(`🔍 Lost Items: ${createdItems.length}`);
     console.log(`💬 Comments: ${createdComments.length}`);
-    console.log(`💭 Chats: ${createdChats.length}`);
     console.log(`🔔 Notifications: ${createdNotifications.length}`);
     console.log(`⚖️ Disputes: ${createdDisputes.length}`);
     console.log(`📊 Analytics: ${createdAnalytics.length}`);

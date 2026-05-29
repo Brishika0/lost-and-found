@@ -101,6 +101,7 @@ export const auth = async (
       role: user.role,
       isActive: user.isActive,
       collegeId: user.collegeId?.toString(),
+      name: user.name,
     };
 
     next();

@@ -14,7 +14,6 @@ import {
   Clock,
   CheckCheck,
   Trash2,
-  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
@@ -54,7 +53,6 @@ export default function NotificationsPage() {
     markAllAsRead,
     deleteNotification,
     deleteAllRead,
-    refetchNotifications,
   } = useNotifications();
 
   // Filter notifications by type
@@ -68,8 +66,8 @@ export default function NotificationsPage() {
       await markAsRead(notification._id);
     }
 
-    if (notification.data?.itemId) {
-      navigate(`/post/${notification.data.itemId}`);
+    if (notification.data?.postId) {
+      navigate(`/post/${notification.data.postId}`);
     } else if (notification.data?.chatId) {
       navigate(`/chats/${notification.data.chatId}`);
     } else if (notification.data?.disputeId) {

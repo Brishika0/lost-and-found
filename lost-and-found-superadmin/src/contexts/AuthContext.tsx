@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     data: user = null,
     isLoading,
     error,
-    refetch: refetchUser,
   } = useQuery({
     queryKey: authKeys.user(),
 

@@ -90,7 +90,7 @@ export default function StudentsPage() {
     }
   };
 
-  const handleResendVerification = async (id: string, email: string) => {
+  const handleResendVerification = async (id: string) => {
     try {
       await resendVerification.mutateAsync(id);
     } catch (error) {

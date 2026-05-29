@@ -10,13 +10,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Power, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
 interface DeleteConfirmation {
   title: string;
   description: string;
   isPending?: boolean;
   onConfirm: () => void;
+  buttonText?: string;
+  defaultBtn?: boolean;
 }
 
 export function DeleteConfirmation({
@@ -24,17 +26,19 @@ export function DeleteConfirmation({
   description,
   isPending,
   onConfirm,
+  buttonText,
+  defaultBtn,
 }: DeleteConfirmation) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant="ghost"
-          className="text-destructive hover:text-destructive focus:bg-destructive/10 w-full justify-start p-2 font-normal hover:bg-red-100"
+          variant={defaultBtn ? "destructive" : "ghost"}
+          className={` ${defaultBtn ? "" : "text-destructive hover:text-destructive focus:bg-destructive/10 w-full justify-start p-2 font-normal hover:bg-red-100"}`}
           size="sm"
         >
           <Trash className="mr-2 h-4 w-4" />
-          Delete
+          {buttonText ? buttonText : "Delete"}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

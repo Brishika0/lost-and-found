@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { generateToken } from "../../utils/jwt/jwt";
-import { sendEmail, emailTemplates } from "../../utils/email.service";
+import { sendEmail, emailTemplates } from "../../services/email.service";
 import User from "../../models/user.model";
 import College from "../../models/college.model";
 import { AuthRequest, TokenRequest } from "../../types/middlewareTypes";

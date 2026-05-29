@@ -1,4 +1,3 @@
-// columns/lostItemColumns.tsx
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +14,6 @@ import {
   MoreHorizontal,
   Copy,
   Eye,
-  Edit,
   Power,
   Trash2,
   Flag,
@@ -23,7 +21,6 @@ import {
   XCircle,
   Calendar,
   MapPin,
-  User,
 } from "lucide-react";
 import { format } from "date-fns";
 import type { LostItem } from "@/types/lostItem.types";

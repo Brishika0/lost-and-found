@@ -12,7 +12,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useGetCollegeAdmins } from "@/hooks/useUsers";
-import { useDebounce } from "@/utils/debounce";
 import { useAddCollegeAdmin, useRemoveCollegeAdmin } from "@/hooks/useColleges";
 
 import {
@@ -32,25 +31,14 @@ interface AdminsTabProps {
 
 export const AdminsTab: React.FC<AdminsTabProps> = ({ collegeId }) => {
   const [open, setOpen] = useState(false);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
-  const [isActive, setIsActive] = useState<boolean | undefined>(undefined);
   const [userId, setUserId] = useState("");
-
-  const debouncedSearch = useDebounce(search, 500);
 
   const {
     data: adminsData,
     isLoading,
     isError,
-    refetch,
   } = useGetCollegeAdmins({
-    page,
-    limit,
-    search: debouncedSearch,
     collegeId,
-    isActive,
   });
 
   const addAdmin = useAddCollegeAdmin();
